@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Altura completa de la ventana */
+   
+}
+.card a{
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    text-decoration: underline;
+    color: #0066ff;
+    cursor: pointer;
+}
+.card a:hover{
+    color: #0033cc;
+    
+}
+.card {
+    width: 400px; /* Ancho de la tarjeta */
+    padding: 20px; /* Espaciado interno */
+    border: 1px solid #ced4da; /* Borde de la tarjeta */
+    border-radius: 0.25rem; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra de la tarjeta */
+}
+
+h2 {
+    text-align: center; /* Centrar el título */
+}
+
+.alert {
+    margin-top: 10px; /* Espaciado superior para el mensaje de error */
+}
+.btn {
+    
+    margin: 10px;
+
+
+}
+.form{
+
+    align-content: center;
+    width: 100%;
+}

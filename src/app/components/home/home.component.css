@@ -1,0 +1,93 @@
+/* Asegúrate de que el contenedor ocupe todo el ancho */
+.container-fluid {
+    padding-left: 0; /* Eliminar el padding izquierdo */
+    padding-right: 0; /* Eliminar el padding derecho */
+}
+
+/* Estilo para el menú lateral */
+.menu-lateral {
+    padding: 20px; /* Espaciado interno */
+    background-color: #f9f9f9; /* Color de fondo claro para el menú lateral */
+    border-right: 1px solid #dee2e6; /* Línea de separación a la derecha */
+    width: 250px; /* Ancho del menú lateral */
+}
+
+/* Estilo para el contenido central */
+.contenido-central {
+    padding: 20px; /* Espaciado interno */
+}
+
+/* Separar el contenido central de la barra de navegación y el menú lateral */
+h2 {
+    margin-top: 20px; /* Espacio superior para el título */
+}
+
+/* Ajustar la tabla */
+.table {
+    margin-top: 20px; /* Espacio superior para la tabla */
+}
+.btn-menu {
+
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    width: 230px;
+    padding: 0px 0px 10px 10px;
+    text-align: center;
+   background-color: #f9f9f9;
+
+    color: #585858;
+    text-shadow: none !important;
+    font-size: 20px;
+    text-decoration: none;
+    margin-left: -35px;
+    }
+    
+    .btn-menu:hover {
+        background-color: #f3f3f3;
+        
+}
+@import '~material-design-icons/iconfont/material-icons.css';
+
+input[type="search"].rounded {
+    border-radius: 20px; /* Ajusta el valor para redondear más o menos */
+}
+
+.btn.rounded {
+    border-radius: 20px; /* Asegúrate de que el botón también tenga bordes redondeados */
+    
+}
+.btn{
+     display: flex; /* Utiliza flexbox para el botón */
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    margin-left: 0px; /* Añade un margen a la izquierda para separar los botones */
+    padding: 5px 10px; /* Ajusta el relleno del botón */
+    font-size: 19px; /* Ajusta el tamaño de la fuente */
+    height: 40px; /* Ajusta la altura del botón */
+    text-align: center; /* Centra el texto del botón */
+    border: none; /* Elimina el borde predeterminado (opcional) */
+ 
+    color: white; /* Color del texto (opcional) */
+    border-radius: 5px; /* Bordes redondeados (opcional) */
+    cursor: pointer; 
+
+}
+.btn:hover {
+    background-color: #086100; /* Cambia el color de fondo al pasar el ratón por encima */
+}
+.btnNuevo{
+    display: flex; /* Utiliza flexbox para el botón */
+   align-items: center; /* Centra verticalmente el contenido */
+   justify-content: center; /* Centra horizontalmente el contenido */
+   margin-left: 0px; /* Añade un margen a la izquierda para separar los botones */
+   padding: 5px 10px; /* Ajusta el relleno del botón */
+   font-size: 19px; /* Ajusta el tamaño de la fuente */
+   height: 40px; /* Ajusta la altura del botón */
+   text-align: center; /* Centra el texto del botón */
+   border: none; /* Elimina el borde predeterminado (opcional) */
+
+   border-radius: 5px; /* Bordes redondeados (opcional) */
+   cursor: pointer; 
+
+}

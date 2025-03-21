@@ -1,0 +1,36 @@
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<div class="modal" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content:center;">
+          <h5 class="modal-title" >Agregar Novedad</h5>
+          <button type="button" class="close" (click)="closeModal()"  style="background: none; border: none;"><span class="material-symbols-outlined">close </span></button>
+        </div>
+        <div class="modal-body" >
+          <form [formGroup]="novedadForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="fecha">Fecha</label>
+              <input type="date" id="fecha" formControlName="fecha" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" formControlName="nombre" class="form-control" placeholder={{loggedUser?.username}}/>
+              <div *ngIf="novedadForm.get('nombre')?.invalid && (novedadForm.get('nombre')?.dirty || novedadForm.get('nombre')?.touched)" class="text-danger">
+                El nombre es requerido.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="novedad">Novedad</label>
+              <textarea id="novedad" style="height: 250;" formControlName="novedad" class="form-control" required></textarea>
+              <div *ngIf="novedadForm.get('novedad')?.invalid && (novedadForm.get('novedad')?.dirty || novedadForm.get('novedad')?.touched)" class="text-danger">
+                La novedad es requerida.
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="novedadForm.invalid">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

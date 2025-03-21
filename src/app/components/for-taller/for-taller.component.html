@@ -1,0 +1,43 @@
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<div class="modal" tabindex="-1" role="dialog" style="height: 900px">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content:center;">
+          <h5 class="modal-title" >Ingresar Equipo a Taller</h5>
+          <button type="button" class="close" (click)="closeModal()"  style="background: none; border: none;"><span class="material-symbols-outlined">close </span></button>
+        </div>
+        <div class="modal-body" >
+          <form [formGroup]="tallerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="fecha">Fecha</label>
+              <input type="date" id="fecha" formControlName="fecha" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="dem">DEM</label>
+              <input type="text" id="dem" formControlName="dem" class="form-control" required />
+              <div *ngIf="tallerForm.get('dem')?.invalid && (tallerForm.get('user')?.dirty || tallerForm.get('motivo')?.touched)" class="text-danger">
+                El campo es requerido.
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="user">Nombre</label>
+                <input type="text" id="nombre" formControlName="user" class="form-control" required />
+                <div *ngIf="tallerForm.get('dem')?.invalid && (tallerForm.get('user')?.dirty || tallerForm.get('motivo')?.touched)" class="text-danger">
+                  El campo es requerido.
+                </div>
+              </div>
+            <div class="form-group">
+              <label for="motivo">Motivo</label>
+              <textarea id="motivo" style="height: 300px;" formControlName="motivo" class="form-control" required></textarea>
+              <div *ngIf="tallerForm.get('dem')?.invalid && (tallerForm.get('user')?.dirty || tallerForm.get('motivo')?.touched)" class="text-danger">
+                La novedad es requerida.
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="tallerForm.invalid">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

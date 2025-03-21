@@ -1,0 +1,97 @@
+<!-- Clase personalizada para el contenido central -->
+<app-nav-bar></app-nav-bar>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<app-for-taller *ngIf="showForm" (close)="closeForm()"></app-for-taller>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-1">
+            <ul class="nav flex-column">
+
+                <li class="nav-item contenido-central">
+                    <button class="btnNuevo" style="background-color: rgb(126, 126, 126); border: none; width: 100%; color: aliceblue; padding: 5px; font-size: 18px;"(click)="openForm()"><span class="material-symbols-outlined">
+                        add
+                        </span>Nuevo Equipo</button>
+                </li>
+                <li class="nav-item contenido-central">
+                    <button class="btnNuevo" style="background-color: rgb(126, 126, 126); border: none; width: 100%; color: aliceblue; padding: 5px; font-size: 18px;" (click)="loadEquipos()"><span class="material-symbols-outlined">
+                        library_books
+                        </span>Ver Todos</button>
+                </li>
+                <li class="nav-item contenido-central">
+                    <button class="btnNuevo" style="background-color: rgb(126, 126, 126); border: none; width: 100%; color: aliceblue; padding: 5px; font-size: 18px;"><span class="material-symbols-outlined">
+                        library_books
+                        </span>Historico</button>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <div class="card">
+            
+
+
+                <div class="col-md-12 contenido-central">
+                    <table class="table">
+
+                        <tbody>
+                            <tr>
+                                <td><input type="search" class="form-control rounded" placeholder="Por DEM...."(input)="filtrarDEM($event)" 
+                                        aria-label="Buscar equipos"></td>
+                                <td><input type="search" class="form-control rounded" placeholder="Por Nombre..."(input)="filtrarNombre($event)" 
+                                        aria-label="Buscar equipos"></td>
+                                <td><input type="search" class="form-control rounded" placeholder="Por Servicio..."(input)="filtrarServicio($event)" 
+                                        aria-label="Buscar equipos"></td>
+                                <td><input type="search" class="form-control rounded" placeholder="Por Ubicacion..."(input)="filtrarUbicacion($event)" 
+                                        aria-label="Buscar equipos"></td>
+                                        <td><input type="search" class="form-control rounded" placeholder="Por Marca..."(input)="filtrarMarca($event)" 
+                                            aria-label="Buscar equipos"></td>
+                                            <td><input type="search" class="form-control rounded" placeholder="Por Serie..."(input)="filtrarSerie($event)" 
+                                                aria-label="Buscar equipos"></td>
+<td style="color: white;">erdsfdsfdsferer</td>
+<td style="color: white;">ersdfdsfdsferer</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>DEM</th>
+                                <th>NOMBRE</th>
+                                <th>SERVICIO</th>
+                                <th>UBICACION</th>
+                                <th>MARCA</th>
+                                <th>MODELO</th>
+                                <th>SERIE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let equipo of equiposFiltrados">
+                                <td >{{ equipo.dem }}</td>
+                                <td><a style="text-decoration: underline; cursor: pointer; color:blue" (click)="handleButtonClick(equipo.dem)">{{ equipo.nombre }}</a></td>
+                                <td>{{ equipo.servicio}}</td>
+                                <td>{{ equipo.ubicacion }}</td>
+                                <td>{{ equipo.marca }}</td>
+                                <td>{{ equipo.modelo }}</td>
+                                <td>{{ equipo.serie }}</td>
+                               
+                                <td><button style="background: none; border: none; color: red; "(click)="handleButtonClick(equipo.dem)"><span class="material-symbols-outlined">
+                                    delete
+                                    </span></button>
+                                </td>
+                                <td><button style="background: none; border: none; color: rgb(139, 139, 0);"(click)="handleButtonClick(equipo.dem)"><span class="material-symbols-outlined">
+                                    build
+                                    </span></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1" style="background-color: rgba(137, 43, 226, 0);">
+            <a (click)="cerrarSesion()" role="button">Cerrar Sesion</a>
+        </div>
+
+        </div>
+    </div>

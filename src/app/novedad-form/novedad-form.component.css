@@ -1,0 +1,41 @@
+.modal {
+    display: block;
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    max-width: 600px;
+    width: 100%; 
+    background-color: rgba(255, 255, 255, 0.9); 
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); 
+    z-index: 1050; /* Asegúrate de que esté por encima de otros elementos */
+
+  }
+  
+  .modal-header {
+    background-color: transparent; /* Fondo transparente */
+    border-bottom: none; /* Sin borde inferior */
+    height: 100px; /* Altura del encabezado */
+
+  }
+  .modal{
+    height: 700px;
+  }
+  
+  .modal-header .close {
+    color: black; /* Color negro para el botón de cerrar */
+  }
+  
+  .modal-body {
+    padding: 2rem; /* Padding interno del cuerpo del modal */
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem; /* Margen inferior entre los grupos de formulario */
+  }
+  
+  .btn-primary {
+    width: 100%; /* Botón ocupa todo el ancho */
+    padding: 0.75rem; /* Padding interno del botón */
+  }
