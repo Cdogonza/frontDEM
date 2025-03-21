@@ -8,6 +8,7 @@ import { ResetpasswordComponent } from './components/resetpassword/resetpassword
 import { AuthGuard } from './auth.guard';
 import { ForTallerComponent } from './components/for-taller/for-taller.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { FacturacionComponent } from './components/facturacion/facturacion.component';
 export const routes: Routes = [
     {path: 'equipos', component: HomeComponent, canActivate: [AuthGuard]},
     {path: 'novedades', component: NovedadesComponent, canActivate: [AuthGuard]},
@@ -17,5 +18,6 @@ export const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'reset-password', component: ResetpasswordComponent},
     {path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard]},
+    {path: 'facturacion', component: FacturacionComponent, canActivate: [AuthGuard]},
     {path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
