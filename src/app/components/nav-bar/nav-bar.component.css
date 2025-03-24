@@ -15,10 +15,10 @@
 
 /* Estilo para el contenido central */
 .contenido-central {
-    padding: 20px; /* Espaciado interno */
+    padding: 10px; /* Espaciado interno */
 }
 
 /* Separar el contenido central de la barra de navegación y el menú lateral */
-h2 {
-    margin-top: 20px; /* Espacio superior para el título */
+h3 {
+    margin-top: 10px; /* Espacio superior para el título */
 }

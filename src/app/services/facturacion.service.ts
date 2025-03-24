@@ -1,48 +1,48 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Facturacion } from '../models/Facturacion'; // Asegúrate de crear este modelo
+import { Entrada } from '../models/Entrada'; // Asegúrate de crear este modelo
 @Injectable({
   providedIn: 'root'
 })
 export class FacturacionService {
+  private apiUrl = 'http://localhost:3000/facturacion'; // Cambia esta URL por la de tu backend
 
-   //private apiUrl = 'https://back-prueba-dem.onrender.com/novedades'; // Cambia esto si es necesario
-   private apiUrl = 'http://localhost:3000/facturacion'; // Cambia esto si es necesario
+  constructor(private http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
-  
-      getNovedadesHoy(): Observable<any> {
-        const url = `${this.apiUrl}/hoy`;
-
-        return this.http.get(url);
-    }
-
-    getNovedadesTodas(): Observable<any> {
-      const url = `${this.apiUrl}/todas`;
-      return this.http.get<any>(url);
-    }
-    
-    createNovedad(novedad: any): Observable<any> {
-      return this.http.post(this.apiUrl, novedad);
-    }
-    
-    private formVisibilitySource = new BehaviorSubject<boolean>(false);
-    formVisibility$ = this.formVisibilitySource.asObservable();
-  
-    toggleFormVisibility() {
-      this.formVisibilitySource.next(!this.formVisibilitySource.value);
-    }
-  
-    showForm() {
-      this.formVisibilitySource.next(true);
-    }
-  
-    hideForm() {
-      this.formVisibilitySource.next(false);
-    }
-    // Puedes agregar más métodos para crear, actualizar y eliminar equipos
+  obtenerFacturaciones(): Observable<Facturacion[]> {
+    return this.http.post<Facturacion[]>(this.apiUrl+'/getAll', {});
   }
 
+  crearFacturacion(facturacion: Facturacion): Observable<Facturacion> {
+    return this.http.post<Facturacion>(this.apiUrl+'/insert', facturacion);
+  }
+  crearEntrada(entrada: Entrada): Observable<Entrada> {
+    return this.http.post<Entrada>(this.apiUrl+'/insertEntrada', entrada);
+  }
 
+  actualizarFacturacion(id: number, facturacion: Facturacion): Observable<Facturacion> {
+    return this.http.post<Facturacion>(`${this.apiUrl}/${id}`, facturacion);
+  }
 
-
+  eliminarFacturacion(idfacturacion: number): Observable<Facturacion> {
+    return this.http.delete<Facturacion>(`${this.apiUrl}/delete/${idfacturacion}`);
+  }
+    
+  updateEstado(idfacturacion: number): Observable<Facturacion> {
+    return this.http.post<Facturacion>(`${this.apiUrl}/updateEstado`, {idfacturacion});
+  }
+  getTotalPendiente(): Observable<number> {
+    return this.http.post<number>(`${this.apiUrl}/totalPendiente`, {});
+  }
+  getTotalPagado(): Observable<number> {
+    return this.http.post<number>(`${this.apiUrl}/totalPagado`, {});
+  }
+  getTotalEntrada(): Observable<number> {
+    return this.http.post<number>(`${this.apiUrl}/totalEntrada`, {});
+  }
+  getTotalCaja(): Observable<number> {
+    return this.http.post<number>(`${this.apiUrl}/totalCaja`, {});
+  }
+}

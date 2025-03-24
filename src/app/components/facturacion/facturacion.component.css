@@ -1,0 +1,141 @@
+/* Estilos para el subtítulo */
+.subtitulo {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #7c7c7cbc; /* Color azul */
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  /* Estilos para el contenedor de la tabla */
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #ffffff;
+  }
+  
+  /* Estilos para la tabla */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  
+  /* Estilos para la cabecera de la tabla */
+  thead {
+    background-color: #62A8D1;
+    color: #ffffff;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+  }
+  
+  /* Estilos para las filas */
+  tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+  
+  tbody tr:hover {
+    background-color: #e9ecef;
+  }
+  
+  /* Estilos para el botón */
+  button {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 3px 6px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #218838;
+  }
+  button.moneyOff:hover {
+    background-color: #882121;
+  }
+  .moneyOff {
+    background-color: #ff0000;
+    color: #ffffff;
+    border: none;
+    padding: 3px 6px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+
+.editButton {
+    background-color: #dcdc2e;
+    margin-left: 7px;
+    color: #ffffff;
+    border: none;
+    padding: 3px 6px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  button.editButton:hover {
+    background-color: #979523;
+  }
+
+  .deleteButton {
+    background-color: #df3939;
+    margin-left: 7px;
+    color: #ffffff;
+    border: none;
+    padding: 3px 6px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  button.deleteButton:hover {
+    background-color: #b52c2c;
+  }
+  .hidden {
+    display: none;
+  }
+
+  .btn-nueva{
+    display: flex;          /* Usa Flexbox para alinear los elementos */
+    align-items: center;    /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    gap: 8px;               /* Espacio entre el ícono y el texto */
+    padding: 6px 16px;     /* Espaciado interno */
+    font-size: 16px;        /* Tamaño del texto */
+    border: none;           /* Elimina el borde por defecto */
+    border-radius: 4px;     /* Bordes redondeados */
+    background-color: #737373; /* Color de fondo */
+    color: white;           /* Color del texto */
+    cursor: pointer;        /* Cambia el cursor al pasar el mouse */
+  }
+  
+  button.btn-nueva:hover {
+    background-color: #c1c1c1; /* Cambia el color de fondo al pasar el mouse */
+  }
+  
+  .material-symbols-outlined {
+    font-size: 24px; /* Tamaño del ícono */
+  }
+  .button-container {
+    display: flex;
+    gap: 5px;
+  }
+  
+  /* Oculta todo excepto la sección a imprimir */

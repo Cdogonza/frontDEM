@@ -1,1 +1,134 @@
-<p>facturacion works!</p>
+<app-nav-bar></app-nav-bar>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title
+            ">Facturación</h4>
+        </div>
+        <div class="table-container">
+          <app-facturacion-form *ngIf="mostrarForm" (closeForm)="ocultarFormulario()"></app-facturacion-form>
+          <app-entrada-form *ngIf="mostrarFormEntrada" (closeFormEntrada)="ocultarFormularioEntrada()"></app-entrada-form>
+          <div *ngIf="!mostrarForm && !mostrarFormEntrada">
+
+            <div class="button-container">
+              <button class="btn-nueva" (click)="mostrarFormulario()">
+                <span class="material-symbols-outlined">receipt_long</span>
+                Nueva
+              </button>
+              <button class="btn-nueva" (click)="mostrarFormularioEntrada()">
+                <span class="material-symbols-outlined">
+                  mintmark
+                  </span>
+                Entrada
+              </button>
+              <button class="btn-nueva" (click)="imprimirPantalla()" >
+                <span class="material-symbols-outlined">
+                  mintmark
+                  </span>
+                Entrada
+              </button>
+            </div>
+
+            <h3 class="subtitulo">FACTURAS PREVISTAS</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th class="hidden">ID Facturación</th>
+                  <th>Fecha</th>
+                  <th>Empresa</th>
+                  <th>Monto</th>
+                  <th>Estado</th>
+                  <th>Observación</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let facturacion of filteredFacturaciones">
+                  <td class="hidden">{{ facturacion.idfacturacion }}</td>
+                  <td> {{ formatDate(facturacion.fecha)}} </td>
+                  <td>{{ facturacion.empresa }}</td>
+                  <td>{{ facturacion.monto | currency }}</td>
+                  <td>{{ facturacion.estado }}</td>
+                  <td>{{ facturacion.observacion }}</td>
+                  <td>
+                    <button (click)="moveClick(facturacion)"><span class="material-symbols-outlined">
+                        attach_money
+                      </span></button>
+                    <button class="editButton" (click)="editAction(facturacion)"><span
+                        class="material-symbols-outlined">
+                        edit_square
+                      </span></button>
+                    <button class="deleteButton" (click)="deleteAction(facturacion)"><span
+                        class="material-symbols-outlined">
+                        delete
+                      </span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5>Total de Facturas Pendientes ${{totalPendiente}}</h5>
+            <!-- Subtítulo "FACTURAS PAGAS" -->
+            <h3 class="subtitulo">FACTURAS PAGAS</h3>
+
+            <!-- Segunda tabla: Filas sin "pendiente" -->
+            <table>
+              <thead>
+                <tr>
+                  <th class="hidden">ID Facturación</th>
+                  <th>Fecha</th>
+                  <th>Empresa</th>
+                  <th>Monto</th>
+                  <th>Estado</th>
+                  <th>Observación</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let facturacion of pagadasFacturaciones">
+                  <td class="hidden">{{ facturacion.idfacturacion }}</td>
+                  <td>{{ formatDate(facturacion.fecha) }}</td>
+                  <td>{{ facturacion.empresa }}</td>
+                  <td>{{ facturacion.monto | currency }}</td>
+                  <td>{{ facturacion.estado }}</td>
+                  <td>{{ facturacion.observacion }}</td>
+                  <td>
+                    <button class="moneyOff" (click)="moveClick(facturacion)"><span class="material-symbols-outlined">
+                        money_off
+                      </span></button>
+                    <button class="editButton" (click)="editAction(facturacion)"><span
+                        class="material-symbols-outlined">
+                        edit_square
+                      </span></button>
+                    <button class="deleteButton" (click)="deleteAction(facturacion)"><span
+                        class="material-symbols-outlined">
+                        delete
+                      </span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <h5>Total de Facturas Pagadas ${{totalPagado}}</h5>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <h3 class="subtitulo">DATOS</h3>
+      <h5>Total F.PREV.: ${{totalPendiente}}</h5>
+      <h5>Total F.PAG.: ${{totalPagado}}</h5>
+      <h5>ING. MES.: ${{totalEntrada}}</h5>
+      <h5>Total CAJA: ${{enCaja}}</h5>
+    </div>
+  </div>
+  
+</div>
+
+
