@@ -1,13 +1,25 @@
 /* Estilos para el subtítulo */
-.subtitulo {
-    margin-top: 30px;
+
+h3{
+
+    margin-top: 20px;
     margin-bottom: 15px;
-    font-size: 1.5em;
-    color: #7c7c7cbc; /* Color azul */
+    font-size: 1.2em;
+    color: #000000bc; /* Color azul */
     text-align: left;
     font-weight: bold;
-  }
-  
+    
+    }  
+    h2{
+        justify-self: center;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        font-size: 1.5em;
+        color: #000000bc; /* Color azul */
+        text-align: left;
+        font-weight: bold;
+        
+        }
   /* Estilos para el contenedor de la tabla */
   .table-container {
     width: 100%;
@@ -33,7 +45,7 @@
   }
   
   th, td {
-    padding: 12px;
+    padding: 8px;
     text-align: left;
   }
   
@@ -116,14 +128,15 @@
     display: flex;          /* Usa Flexbox para alinear los elementos */
     align-items: center;    /* Centra verticalmente */
     justify-content: center; /* Centra horizontalmente */
-    gap: 8px;               /* Espacio entre el ícono y el texto */
-    padding: 6px 16px;     /* Espaciado interno */
+    gap: 1px;               /* Espacio entre el ícono y el texto */
+    padding: 2px 8px;     /* Espaciado interno */
     font-size: 16px;        /* Tamaño del texto */
     border: none;           /* Elimina el borde por defecto */
     border-radius: 4px;     /* Bordes redondeados */
     background-color: #737373; /* Color de fondo */
     color: white;           /* Color del texto */
-    cursor: pointer;        /* Cambia el cursor al pasar el mouse */
+    cursor: pointer;
+    margin: 5px;        /* Cambia el cursor al pasar el mouse */
   }
   
   button.btn-nueva:hover {
@@ -137,118 +150,9 @@
     display: flex;
     gap: 5px;
   }
-  
-  /* Oculta todo excepto la sección a imprimir */
-  .containerPDF {
-    text-align: center;
-    margin-top: 50px;
-}
-
-.containerPDF.table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.containerPDF.table,
-.containerPDF.th,
-.containerPDF.td {
-    border: 1px solid black;
-    padding: 8px;
-}
-
-.containerPDF.th {
-    background-color: #f2f2f2;
-}
-
-.containerPDF.button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-.containerPDF.button:hover {
-    background-color: #45a049;
-}
-
-/* codigo para el form de cerrrar el mes */
-/* Estilos para el componente de cierre */
-/* Estilos para el componente de cierre */
-.cierre-mes {
-  padding: 1.5rem;
-  max-width: 350px;
-  margin: 1rem auto;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  border-radius: 8px;
-  background: white;
-}
-
-.cierre-titulo {
-  margin-top: 0;
-  margin-bottom: 1.2rem;
-  color: #2c3e50;
-  font-size: 1.2rem;
-  text-align: center;
-}
-
-.mes-select {
-  width: 100%;
-  padding: 0.6rem;
-  margin-bottom: 1.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  background-color: #f9f9f9;
-  transition: border 0.3s ease;
-}
-
-.mes-select:focus {
-  outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
-}
-
-.botones-accion {
-  display: flex;
-  gap: 0.8rem;
-}
-
-.btn-cerrar, .btn-cancelar {
-  flex: 1;
-  padding: 0.7rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.btn-cerrar {
-  background-color: #e74c3c;
-  color: white;
-}
-
-.btn-cerrar:hover {
-  background-color: #c0392b;
-}
-
-.btn-cancelar {
-  background-color: #f8f9fa;
-  color: #6c757d;
-  border: 1px solid #ddd;
-}
-
-.btn-cancelar:hover {
-  background-color: #e9ecef;
-  border-color: #ced4da;
-}
-
-.btn-cerrar i, .btn-cancelar i {
-  font-size: 0.9rem;
-}
+  .label {
+    font-size: 1.0em;
+    font-weight: bold;
+    color: #000000bc; /* Color azul */
+    margin: 5px;
+  }

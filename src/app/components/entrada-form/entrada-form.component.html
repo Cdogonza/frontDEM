@@ -1,4 +1,9 @@
+<button class="cerrar" (click)="onCancel()"><span class="material-symbols-outlined">
+  close
+  </span></button>
+
 <form (ngSubmit)="onSubmit()">
+  <h5 class="subtitulo">Ingreso en Caja</h5>
     <div>
       <label for="fecha">Fecha:</label>
       <input type="date" id="fecha" [(ngModel)]="entrada.fecha" name="fecha" required>

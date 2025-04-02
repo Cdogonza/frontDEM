@@ -1,0 +1,75 @@
+<div>
+    <label class="label" for="meses">Selecciona un mes:</label>
+    <select id="meses" (change)="cambiarMes($event)">
+      <option value="" disabled selected>-- Seleccione --</option>
+      <option *ngFor="let mes of meses" [value]="mes">{{ mes }}</option>
+    </select>
+  </div>
+  <button class="btn-nueva" (click)="exportPDF()">Generar Reporte</button>
+  <button class="btn-nueva" (click)="cancelarReporte()">Cancelar</button>
+<div id="content" class="table-container">
+
+
+    <h2 class="subtitulo">REPORTE DE FONDO ROTATORIO DEL MES DE {{mesSeleccionado}}</h2>
+
+    <!-- Subtítulo "FACTURAS PAGAS" -->
+    <h3 class="subtitulo">Entradas del mes</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="hidden">ID Facturación</th>
+                <th>Fecha</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let entradaa of entrada">
+                <td class="hidden">{{ entradaa.identrada }}</td>
+                <td>{{ formatDate(entradaa.fecha) }}</td>
+                <td>{{ entradaa.monto | currency }}</td>
+
+                
+            </tr>
+        </tbody>
+        <tr>
+            <td colspan="1" style="text-align: left;justify-self: auto; font-weight: bold; background-color: rgb(208, 209, 209);"></td>
+            <td colspan="2" style="text-align: left;justify-self: auto; font-weight: bold; background-color: rgb(208, 209, 209);">TOTAL: {{totalEntrada| currency}}</td>
+        </tr>
+    </table>
+    <h3 class="subtitulo">Salidas del mes</h3>
+
+    <!-- Segunda tabla: Filas sin "pendiente" -->
+    <table>
+        <thead>
+            <tr>
+                <th class="hidden">ID Facturación</th>
+                <th>Fecha</th>
+                <th>Empresa</th>
+                <th>Monto</th>
+                <th>Estado</th>
+                <th>Observación</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let facturacion of pagadasFacturaciones">
+                <td class="hidden">{{ facturacion.idfacturacion }}</td>
+                <td>{{ formatDate(facturacion.fecha) }}</td>
+                <td>{{ facturacion.empresa }}</td>
+                <td>{{ facturacion.monto | currency }}</td>
+                <td>{{ facturacion.estado }}</td>
+                <td>{{ facturacion.observacion }}</td>
+                
+            </tr>
+            
+        </tbody>
+        <tr>
+            <td colspan="2" style="text-align: left;justify-self: auto; font-weight: bold; background-color: rgb(208, 209, 209);"></td>
+            <td colspan="3" style="text-align: left;justify-self: auto; font-weight: bold; background-color: rgb(208, 209, 209);">TOTAL: {{totalPagado| currency}}
+        </tr>
+    </table>
+    <h5>Total de entradas del mes {{totalEntrada| currency}}</h5>
+    <h5>Total de salidas del mes $ {{totalPagado| currency}}</h5>
+    <h5>Pasa para el mes siguiente $ {{enCaja| currency}}</h5>
+</div>

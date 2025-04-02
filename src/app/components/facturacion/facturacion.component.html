@@ -9,27 +9,50 @@
           <h4 class="card-title
             ">Facturación</h4>
         </div>
-        <div class="table-container">
+
+        <div id="content" class="table-container">
+          <div class="card cierre-mes" *ngIf="cerrar">
+            <h3 class="cierre-titulo">Cierre Mensual</h3>
+            <select [(ngModel)]="mesSeleccionado" class="mes-select">
+              <option value="" disabled selected>Seleccione un mes</option>
+              <option *ngFor="let mes of meses" [value]="mes">{{ mes | titlecase }}</option>
+            </select>
+            <div class="botones-accion">
+              <button class="btn-cerrar" (click)="confirmarCierre()">
+                <i class="fas fa-calendar-times"></i> Cerrar Mes
+              </button>
+              <button class="btn-cancelar" (click)="cerrarMes()">
+                <i class="fas fa-times"></i> Cancelar
+              </button>
+            </div>
+          </div>
           <app-facturacion-form *ngIf="mostrarForm" (closeForm)="ocultarFormulario()"></app-facturacion-form>
-          <app-entrada-form *ngIf="mostrarFormEntrada" (closeFormEntrada)="ocultarFormularioEntrada()"></app-entrada-form>
-          <div *ngIf="!mostrarForm && !mostrarFormEntrada">
+          <app-entrada-form *ngIf="mostrarFormEntrada"
+            (closeFormEntrada)="ocultarFormularioEntrada()"></app-entrada-form>
+          <div *ngIf="!mostrarForm && !mostrarFormEntrada && !cerrar">
 
             <div class="button-container">
               <button class="btn-nueva" (click)="mostrarFormulario()">
                 <span class="material-symbols-outlined">receipt_long</span>
-                Nueva
+                Nueva Factura
               </button>
               <button class="btn-nueva" (click)="mostrarFormularioEntrada()">
                 <span class="material-symbols-outlined">
                   mintmark
-                  </span>
-                Entrada
+                </span>
+                Entrada en Caja
               </button>
-              <button class="btn-nueva" (click)="imprimirPantalla()" >
+              <button class="btn-nueva" (click)="exportPDF()">
                 <span class="material-symbols-outlined">
-                  mintmark
-                  </span>
-                Entrada
+                  lab_profile
+                </span>
+                Reporte
+              </button>
+              <button class="btn-nueva" (click)="cerrarMes()">
+                <span class="material-symbols-outlined">
+                  disabled_by_default
+                </span>
+                Cerrar Mes
               </button>
             </div>
 
@@ -114,9 +137,6 @@
             </table>
             <h5>Total de Facturas Pagadas ${{totalPagado}}</h5>
           </div>
-
-
-
         </div>
       </div>
     </div>
@@ -128,7 +148,5 @@
       <h5>Total CAJA: ${{enCaja}}</h5>
     </div>
   </div>
-  
+
 </div>
-
-

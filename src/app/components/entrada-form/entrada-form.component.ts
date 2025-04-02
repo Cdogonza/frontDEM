@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { FacturacionService } from '../../services/facturacion.service';
 import { Entrada } from '../../models/Entrada';
 import { BrowserModule } from '@angular/platform-browser';
@@ -7,27 +7,36 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-entrada-form',
-  imports: [    CommonModule,
+  imports: [CommonModule,
     FormsModule],
   templateUrl: './entrada-form.component.html',
   styleUrl: './entrada-form.component.css'
 })
-export class EntradaFormComponent {
+export class EntradaFormComponent implements OnInit{
+
+ public static totalCaja: string = "";
 
   @Output() closeFormEntrada = new EventEmitter<void>(); // Evento para cerrar el formulario
   entrada: Entrada = {
-    idfacturacion: 0,
+    identrada: 0,
     fecha: new Date().toISOString().split('T')[0], // Fecha actual por defecto
     monto: 0,
   };
 
-  constructor(private facturacionService: FacturacionService) {}
+  constructor(private facturacionService: FacturacionService) { 
+  }
 
+  ngOnInit(): void {
+
+  }
+  getCaja(){
+    return EntradaFormComponent.totalCaja;
+  }
   onSubmit(): void {
     this.facturacionService.crearEntrada(this.entrada).subscribe(
       (response) => {
         console.log('Entrada creada:', response);
-        
+
         this.closeFormEntrada.emit(); // Cierra el formulario después de guardar
       },
       (error) => {
@@ -35,6 +44,9 @@ export class EntradaFormComponent {
       }
     );
   }
+cerrarCaja(){
+
+}
 
   onCancel(): void {
     this.closeFormEntrada.emit(); // Cierra el formulario sin guardar

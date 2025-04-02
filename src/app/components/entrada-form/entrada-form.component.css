@@ -6,7 +6,7 @@ form {
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #a09898;
+    background-color: #ccc8c8;
   }
   
   form div {
@@ -27,4 +27,33 @@ form {
   
   button {
     margin-right: 10px;
+  }
+  .cerrar{
+    background-color: #f44336;
+    color: white;
+    flex: 1;
+    padding: 0.2rem;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    opacity: 0.7;
+    float: right;
+    margin-bottom: 100px;
+  }
+  .cajabtn{
+    background-color: #ccc;
+    flex: 1;
+    padding: 0.7rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
   }

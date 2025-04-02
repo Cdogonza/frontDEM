@@ -11,8 +11,9 @@ import { FacturacionFormComponent } from '../facturacion-form/facturacion-form.c
 import { EntradaFormComponent } from '../entrada-form/entrada-form.component';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
-import 'jspdf-autotable';
 @Component({
   selector: 'app-facturacion',
   standalone: true,
@@ -22,8 +23,9 @@ import 'jspdf-autotable';
     NavBarComponent,
     NgIf,
     FacturacionFormComponent,
-    EntradaFormComponent
-  ],
+    EntradaFormComponent,
+    FormsModule,
+     ],
   templateUrl: './facturacion.component.html',
   styleUrls: ['./facturacion.component.css']
 })
@@ -40,8 +42,14 @@ export class FacturacionComponent implements OnInit {
   fecha = new Date();
   datePipe: DatePipe = new DatePipe('en-US');
   fechaHoy: string = this.datePipe.transform(this.fecha, 'yyyy-MM-dd') || '';
+  mesSeleccionado: string = '';
+  meses = [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+  ];
+  cerrar:boolean = false;
 
-  constructor(private facturacionService: FacturacionService) {
+  constructor(private facturacionService: FacturacionService,private router: Router) {
     
    }
 
@@ -53,6 +61,58 @@ export class FacturacionComponent implements OnInit {
     this.getTotalPagado();
     this.getTotalEntrada();
   }
+  exportPDF() {
+// abrir el componente reporte
+this.router.navigate(['/reporte']); 
+}
+
+cerrarMes(): void {
+  if(this.cerrar){
+    this.cerrar = false;
+  }else{
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¡Recuerda hacer el Reporte del mes antes!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, cerrar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) { // Si el usuario confirma
+        this.cerrar = true;
+      }
+    });
+    
+  }
+}
+confirmarCierre() {
+  if (!this.mesSeleccionado) {
+Notify.warning('Seleccione un mes para cerrar');
+    return;
+  }
+
+  if (confirm('¿Está seguro que desea cerrar el mes? Los datos se moverán al historial y se eliminarán de facturación.')) {
+    this.facturacionService.cerrarCaja(this.mesSeleccionado).subscribe(
+      (response) => {
+        Notify.success('Mes cerrado correctamente');
+        this.cargarFacturaciones();
+        this.cerrar = false;
+      },
+      (error) => {
+        Notify.failure('Error al cerrar el mes');
+        console.error('Error:', error);
+      }
+    );
+  }
+}
+
+editarItem() {
+  // Navega al formulario y pasa los datos como estado
+  this.router.navigate(['/formulario'], { state: { data: this.facturaciones } });
+}
+
 
   formatDate(dateString: string): string {
     const dateObject = new Date(dateString);
@@ -106,6 +166,7 @@ export class FacturacionComponent implements OnInit {
 
         const parsedObject = JSON.parse(jsonString); // Convierte el string de vuelta a objeto
         this.totalEntrada = parsedObject.total.toString(); // Extrae el valor de `total` // Extrae el valor de `total`
+        EntradaFormComponent.totalCaja = this.enCaja;
       },
       (error) => {
         console.error('Error al obtener el total entrada', error);
@@ -207,7 +268,8 @@ export class FacturacionComponent implements OnInit {
     });
   }
   editAction(facturacion: Facturacion): void {
-
+    // Navega al formulario y pasa los datos como estado
+    this.router.navigate(['/formulario'], { state: { data: facturacion } });  
   }
 
   totalEnCaja(): void {

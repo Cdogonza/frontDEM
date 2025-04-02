@@ -22,6 +22,6 @@
       <label for="observacion">Observación:</label>
       <textarea id="observacion" [(ngModel)]="factura.observacion" name="observacion"></textarea>
     </div>
-    <button type="submit">Guardar</button>
+    <button type="submit"> {{ modoEdicion ? 'Actualizar' : 'Guardar' }}</button>
     <button type="button" (click)="onCancel()">Cancelar</button>
   </form>

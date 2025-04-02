@@ -1,5 +1,5 @@
 export interface Entrada {
-    idfacturacion: number;
-    fecha: String;
+    identrada: number;
+    fecha: string;
     monto: number;
   }
