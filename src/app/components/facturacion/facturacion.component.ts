@@ -13,6 +13,9 @@ import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { PermissionService } from '../../services/permission.service';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../user.model';
 
 @Component({
   selector: 'app-facturacion',
@@ -48,13 +51,28 @@ export class FacturacionComponent implements OnInit {
     'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
   ];
   cerrar:boolean = false;
+  loggedUser : User | null = null; // Usuario logueado
+  currentUser: string = '';
+  userPermissions: string[] = [];
 
-  constructor(private facturacionService: FacturacionService,private router: Router) {
+
+  constructor(private facturacionService: FacturacionService,private router: Router,private permissionService: PermissionService, private authService: AuthService) {
+    // Inicializa la fecha de hoy
+    this.fecha = new Date();
+    this.fechaHoy = this.datePipe.transform(this.fecha, 'yyyy-MM-dd') || '';
     
-   }
+  }
+    
+   
 
 
   ngOnInit(): void {
+    this.loggedUser  = this.authService.getLoggedUser (); // Obtener el usuario logueado
+    this.currentUser = this.loggedUser?.username || '';
+    if (this.currentUser) {
+      this.userPermissions = this.permissionService.getUserPermissions(this.currentUser);
+      console.log(this.currentUser);
+    }
     this.totalEnCaja();
     this.cargarFacturaciones();
     this.getTotalPendiente();
@@ -62,11 +80,18 @@ export class FacturacionComponent implements OnInit {
     this.getTotalEntrada();
   }
   exportPDF() {
-// abrir el componente reporte
+    if (!this.currentUser || !this.permissionService.hasPermission(this.currentUser, 'ingresar_facturas')) {
+      Notify.failure('No tienes permiso para cerrar el mes');
+      return;
+    }
 this.router.navigate(['/reporte']); 
 }
 
 cerrarMes(): void {
+  if (!this.currentUser || !this.permissionService.hasPermission(this.currentUser, 'ingresar_facturas')) {
+  Notify.failure('No tienes permiso para cerrar el mes');
+  return;
+}
   if(this.cerrar){
     this.cerrar = false;
   }else{
@@ -122,9 +147,17 @@ editarItem() {
     window.print(); // Abre el diálogo de impresión del navegador
   }
   mostrarFormulario(): void {
+    if (!this.currentUser || !this.permissionService.hasPermission(this.currentUser, 'ingresar_facturas')) {
+      Notify.failure('No tienes permiso para cerrar el mes');
+      return;
+    }
     this.mostrarForm = true; // Muestra el formulario
   }
   mostrarFormularioEntrada(): void {
+    if (!this.currentUser || !this.permissionService.hasPermission(this.currentUser, 'ingresar_facturas')) {
+      Notify.failure('No tienes permiso para cerrar el mes');
+      return;
+    }
     this.mostrarFormEntrada = true; // Muestra el formulario
   }
 
@@ -211,6 +244,10 @@ editarItem() {
   }
 
   moveClick(facturacion: Facturacion): void {
+    if (!this.currentUser || !this.permissionService.hasPermission(this.currentUser, 'ingresar_facturas')) {
+      Notify.failure('No tienes permiso para cerrar el mes');
+      return;
+    }
     // Muestra el indicador de carga
     Loading.standard('Cargando...');
 
@@ -241,6 +278,10 @@ editarItem() {
     );
   }
   deleteAction(facturacion: Facturacion): void {
+    if (!this.currentUser || !this.permissionService.hasPermission(this.currentUser, 'ingresar_facturas')) {
+      Notify.failure('No tienes permiso para cerrar el mes');
+      return;
+    }
     // Muestra un cuadro de diálogo de confirmación
     Swal.fire({
       title: '¿Estás seguro?',
@@ -268,6 +309,10 @@ editarItem() {
     });
   }
   editAction(facturacion: Facturacion): void {
+    if (!this.currentUser || !this.permissionService.hasPermission(this.currentUser, 'ingresar_facturas')) {
+      Notify.failure('No tienes permiso para cerrar el mes');
+      return;
+    }
     // Navega al formulario y pasa los datos como estado
     this.router.navigate(['/formulario'], { state: { data: facturacion } });  
   }

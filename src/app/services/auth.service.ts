@@ -95,6 +95,7 @@ export class AuthService implements OnInit {
     logout() {
         console.log('🔴 Cerrando sesión...');
         localStorage.removeItem('token'); // Eliminar el token del almacenamiento local
+        localStorage.removeItem('user'); // Eliminar el usuario del almacenamiento local
         this.router.navigate(['/login']);
     }
 }

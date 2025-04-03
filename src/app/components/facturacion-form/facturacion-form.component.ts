@@ -5,6 +5,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { formatDate } from '@angular/common';
 @Component({
   selector: 'app-facturacion-form',
   templateUrl: './facturacion-form.component.html',
@@ -27,6 +29,9 @@ export class FacturacionFormComponent implements OnInit {
   modoEdicion: boolean = false;
   item: Facturacion | undefined;
 
+  datePipe: DatePipe = new DatePipe('en-US');
+  fechaHoy: string = '';
+
   constructor(private facturacionService: FacturacionService,private router: Router) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras?.state as { data: any };
@@ -41,12 +46,32 @@ export class FacturacionFormComponent implements OnInit {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras?.state as { data: any };
 
+    console.log(this.modoEdicion);
     if (state?.data) {
+      
       this.modoEdicion = true;
-      this.item = { ...state.data }; // Copia los datos para evitar mutaciones
+      this.item = { ...state.data,
+        fecha: this.formatDateForInput(state.data.fecha)
+       }; // Copia los datos para evitar mutaciones
+
     } else {
       this.inicializarItemVacio(); // Si es modo "creación"
     }
+  }
+  private formatDateForInput(dateValue: string | Date): string {
+    if (!dateValue) return '';
+    
+    // Si es string en formato ISO (2025-04-03T03:00:00.000Z)
+    if (typeof dateValue === 'string') {
+      return dateValue.split('T')[0];
+    }
+    
+    // Si es objeto Date
+    if (dateValue instanceof Date) {
+      return formatDate(dateValue, 'yyyy-MM-dd', 'en-US');
+    }
+    
+    return '';
   }
 
   private inicializarItemVacio() {
