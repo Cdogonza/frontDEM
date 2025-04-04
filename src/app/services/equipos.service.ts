@@ -6,8 +6,8 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class EquiposService {
-  //private apiUrl = 'https://back-prueba-dem.onrender.com/equipos'; // Cambia esto si es necesario
-  private apiUrl = 'http://localhost:3000/equipos';
+  private apiUrl = 'https://back-prueba-dem.onrender.com/equipos'; // Cambia esto si es necesario
+  //private apiUrl = 'http://localhost:3000/equipos';
   constructor(private http: HttpClient) { }
 
     getEquipos(): Observable<any> {

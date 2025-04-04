@@ -8,8 +8,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class TallerService {
 
 
-  //private apiUrl = 'https://back-prueba-dem.onrender.com/taller'; // Cambia esto si es necesario
-  private apiUrl = 'http://localhost:3000/taller';
+  private apiUrl = 'https://back-prueba-dem.onrender.com/taller'; // Cambia esto si es necesario
+  //private apiUrl = 'http://localhost:3000/taller';
   constructor(private http: HttpClient) { }
 
   getTaller(): Observable<any> {

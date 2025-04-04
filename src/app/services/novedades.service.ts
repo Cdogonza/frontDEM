@@ -7,8 +7,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class NovedadesService {
 
-   //private apiUrl = 'https://back-prueba-dem.onrender.com/novedades'; // Cambia esto si es necesario
-   private apiUrl = 'http://localhost:3000/novedades'; // Cambia esto si es necesario
+   private apiUrl = 'https://back-prueba-dem.onrender.com/novedades'; // Cambia esto si es necesario
+   //private apiUrl = 'http://localhost:3000/novedades'; // Cambia esto si es necesario
 
     constructor(private http: HttpClient) { }
   

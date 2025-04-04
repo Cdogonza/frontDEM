@@ -7,7 +7,7 @@ import { Entrada } from '../models/Entrada'; // Asegúrate de crear este modelo
   providedIn: 'root'
 })
 export class FacturacionService {
-  private apiUrl = 'http://localhost:3000/facturacion'; // Cambia esta URL por la de tu backend
+  private apiUrl = 'https://back-prueba-dem.onrender.com/facturacion'; // Cambia esta URL por la de tu backend
 
   constructor(private http: HttpClient) {}
 

@@ -40,9 +40,9 @@ export class AuthService implements OnInit {
           clearTimeout(this.logoutTimer);
         }
       }
-    //private apiUrl = 'https://back-prueba-dem.onrender.com/auth';
+    private apiUrl = 'https://back-prueba-dem.onrender.com/auth';
 
-    private apiUrl = 'http://localhost:3000/auth';
+   // private apiUrl = 'http://localhost:3000/auth';
 
     register(username: string, password: string): Observable<any> {
         return this.http.post(`${this.apiUrl}/register`, { username, password });
