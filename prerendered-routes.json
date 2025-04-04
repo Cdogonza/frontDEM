@@ -1,0 +1,16 @@
+{
+  "routes": {
+    "/frontDEM": {},
+    "/frontDEM/change-password": {},
+    "/frontDEM/equipos": {},
+    "/frontDEM/facturacion": {},
+    "/frontDEM/for-taller": {},
+    "/frontDEM/formulario": {},
+    "/frontDEM/login": {},
+    "/frontDEM/novedadForm": {},
+    "/frontDEM/novedades": {},
+    "/frontDEM/reporte": {},
+    "/frontDEM/reset-password": {},
+    "/frontDEM/taller": {}
+  }
+}
