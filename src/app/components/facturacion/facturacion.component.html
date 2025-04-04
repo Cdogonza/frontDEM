@@ -56,7 +56,7 @@
               </button>
             </div>
 
-            <h3 class="subtitulo">FACTURAS PREVISTAS</h3>
+            <h3 class="subtitulo"> GASTOS PREVISTOS</h3>
             <table>
               <thead>
                 <tr>
@@ -94,32 +94,33 @@
               </tbody>
             </table>
 
-            <h5>Total de Facturas Pendientes ${{totalPendiente}}</h5>
+            <h5>Total de Gastos Previstos {{totalPendiente | currency}}</h5>
             <!-- Subtítulo "FACTURAS PAGAS" -->
             <h3 class="subtitulo">FACTURAS PAGAS</h3>
-
+<!-- white-space: pre-wrap; /* Respeta saltos de línea y espacios, pero hace wrap */
+  overflow: hidden; -->
             <!-- Segunda tabla: Filas sin "pendiente" -->
             <table>
               <thead>
                 <tr>
                   <th class="hidden">ID Facturación</th>
-                  <th>Fecha</th>
+                  <th  >Fecha</th>
                   <th>Empresa</th>
                   <th>Monto</th>
                   <th>Estado</th>
-                  <th>Observación</th>
-                  <th>Acción</th>
+                  <th >Observación</th>
+                  <th >Acción</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let facturacion of pagadasFacturaciones">
                   <td class="hidden">{{ facturacion.idfacturacion }}</td>
-                  <td>{{ formatDate(facturacion.fecha) }}</td>
+                  <td >{{ formatDate(facturacion.fecha) }}</td>
                   <td>{{ facturacion.empresa }}</td>
                   <td>{{ facturacion.monto | currency }}</td>
                   <td>{{ facturacion.estado }}</td>
-                  <td>{{ facturacion.observacion }}</td>
-                  <td>
+                  <td  >{{ facturacion.observacion }}</td>
+                  <td >
                     <button class="moneyOff" (click)="moveClick(facturacion)"><span class="material-symbols-outlined">
                         money_off
                       </span></button>
@@ -135,17 +136,17 @@
                 </tr>
               </tbody>
             </table>
-            <h5>Total de Facturas Pagadas ${{totalPagado}}</h5>
+            <h5>Total de Facturas Pagadas {{totalPagado | currency}}</h5>
           </div>
         </div>
       </div>
     </div>
     <div class="col-md-2">
       <h3 class="subtitulo">DATOS</h3>
-      <h5>Total F.PREV.: ${{totalPendiente}}</h5>
-      <h5>Total F.PAG.: ${{totalPagado}}</h5>
-      <h5>ING. MES.: ${{totalEntrada}}</h5>
-      <h5>Total CAJA: ${{enCaja}}</h5>
+      <h5>Total G.PREV.: {{totalPendiente | currency }}</h5>
+      <h5>Total F.PAG.: {{totalPagado | currency }}</h5>
+      <h5>ING. MES.: {{totalEntrada | currency }}</h5>
+      <h5>Total CAJA: {{enCaja | currency }}</h5>
     </div>
   </div>
 

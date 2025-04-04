@@ -22,3 +22,6 @@
 h3 {
     margin-top: 10px; /* Espacio superior para el título */
 }
+h5{
+    margin: 10px 10px; /* Espacio superior e inferior para el subtítulo */
+}
