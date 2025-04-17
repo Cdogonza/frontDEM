@@ -23,5 +23,5 @@ export const routes: Routes = [
     {path: 'formulario', component: FacturacionFormComponent, canActivate: [AuthGuard]},
     {path: 'reporte', component: ReporteComponent, canActivate: [AuthGuard]},
     {path: 'facturacion', component: FacturacionComponent, canActivate: [AuthGuard]},
-    {path: '', redirectTo: '/login', pathMatch: 'full'}
+    {path: '', redirectTo: 'login', pathMatch: 'full'}
 ];

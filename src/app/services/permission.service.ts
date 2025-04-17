@@ -8,7 +8,7 @@ export class PermissionService {
   private permissionsMap: {[key: string]: string[]} = {
 
     'maolivera': ['ingresar_facturas', 'ver_facturas', 'editar_facturas', 'eliminar_facturas','mover_facturas'],
-    'rpediferro': ['ingresar_facturas', 'ver_facturas', 'editar_facturas', 'eliminar_facturas','mover_facturas'],
+    'mpediferro': ['ingresar_facturas', 'ver_facturas', 'editar_facturas', 'eliminar_facturas','mover_facturas'],
     'gpaz': ['ingresar_facturas', 'ver_facturas', 'editar_facturas', 'eliminar_facturas','mover_facturas'],
   };
 

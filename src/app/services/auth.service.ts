@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../envairoment';
 export interface User {
     id: number;
     username: string;
@@ -15,7 +16,7 @@ export interface User {
 export class AuthService implements OnInit {
     private logoutTimer: any;
     message: string = '';
-    private readonly SESSION_TIMEOUT = 10*60*1000; // 15 minutos
+    private readonly SESSION_TIMEOUT = 30*60*1000; // 15 minutos
     public loadingSubject = new BehaviorSubject<boolean>(false);
     loading$ = this.loadingSubject.asObservable();
     constructor(private http: HttpClient,private router: Router) {}
@@ -40,9 +41,8 @@ export class AuthService implements OnInit {
           clearTimeout(this.logoutTimer);
         }
       }
-    private apiUrl = 'https://back-prueba-dem.onrender.com/auth';
 
-   // private apiUrl = 'http://localhost:3000/auth';
+    private apiUrl = environment.apiUrl; // Cambia esto si es necesario
 
     register(username: string, password: string): Observable<any> {
         return this.http.post(`${this.apiUrl}/register`, { username, password });
@@ -52,30 +52,6 @@ export class AuthService implements OnInit {
         return this.http.post(`${this.apiUrl}/login`, { username, password });
     }
 
-    // login(username: string, password: string): Promise<void> {
-    //     this.loadingSubject.next(true);
-    //     return new Promise((resolve, reject) => {
-
-    //       setTimeout(() => {
-    //         this.http.post(`${this.apiUrl}/login`, { username, password }).subscribe(
-    //             (response: any) => {
-    //                 localStorage.setItem('token', response.token);
-    //                 this.router.navigate(['/novedades']);
-    //                 this.loadingSubject.next(false);
-    //                 resolve();
-    //             },
-    //             (error) => {
-                  
-    //                 console.error('Error al iniciar sesión', error);
-    //                 this.loadingSubject.next(false);
-    //                 reject();
-    //             }
-    //             );
-    //         this.loadingSubject.next(false);
-    //         resolve();
-    //       }, 7000);
-    //     });
-    //   }
 
       
     resetPassword(email: string): Observable<any> {

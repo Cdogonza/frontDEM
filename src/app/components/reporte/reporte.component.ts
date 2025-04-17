@@ -54,17 +54,22 @@ export class ReporteComponent implements OnInit{
     const dateObject = new Date(dateString);
     return dateObject.toISOString().split('T')[0];
   }
-  exportPDF() {
-    const data = document.getElementById('content');
-    html2canvas(data!).then(canvas => {
-        const imgWidth = 208;
-        const imgHeight = canvas.height * imgWidth / canvas.width;
-        const contentDataURL = canvas.toDataURL('image/png');
-        const pdf = new jsPDF.jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-        const position = 1;
-        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-        pdf.save(this.mesSeleccionado+'.pdf'); // Save the generated PDF
-    });
+exportPDF() {
+  const data = document.getElementById('content');
+  html2canvas(data!).then(canvas => {
+    // Cambiar la orientación a horizontal ('l' en lugar de 'p')
+    const pdf = new jsPDF.jsPDF('l', 'mm', 'a4'); // 'l' = landscape (horizontal)
+    
+    // Ajustar dimensiones para orientación horizontal
+    const imgWidth = 297; // Ancho de A4 en mm (297mm para horizontal)
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    
+    const contentDataURL = canvas.toDataURL('image/png');
+    const position = 1;
+    
+    pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+    pdf.save(this.mesSeleccionado + '.pdf');
+  });
 }
 cancelarReporte(): void {
   this.router.navigate(['/facturacion']); 

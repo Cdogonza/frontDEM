@@ -3,11 +3,12 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Facturacion } from '../models/Facturacion'; // Asegúrate de crear este modelo
 import { Entrada } from '../models/Entrada'; // Asegúrate de crear este modelo
+import { environment } from '../envairoment';
 @Injectable({
   providedIn: 'root'
 })
 export class FacturacionService {
-  private apiUrl = 'https://back-prueba-dem.onrender.com/facturacion'; // Cambia esta URL por la de tu backend
+  private apiUrl = environment.apiUrl+'/facturacion'; // Cambia esta URL por la de tu backend
 
   constructor(private http: HttpClient) {}
 

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../envairoment';
 @Injectable({
   providedIn: 'root'
 })
 export class EquiposService {
-  private apiUrl = 'https://back-prueba-dem.onrender.com/equipos'; // Cambia esto si es necesario
-  //private apiUrl = 'http://localhost:3000/equipos';
+  private apiUrl = environment.apiUrl + '/equipos'; // Cambia esto si es necesario
   constructor(private http: HttpClient) { }
 
     getEquipos(): Observable<any> {

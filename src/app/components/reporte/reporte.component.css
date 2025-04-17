@@ -26,7 +26,7 @@ h3{
     overflow-x: auto;
     margin: 20px auto;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
     border-radius: 10px;
     background-color: #ffffff;
   }
@@ -51,11 +51,11 @@ h3{
   
   /* Estilos para las filas */
   tbody tr {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #ffffff;
   }
   
   tbody tr:nth-child(even) {
-    background-color: #f8f9fa;
+    background-color: #ffffff;
   }
   
   tbody tr:hover {
@@ -140,7 +140,7 @@ h3{
   }
   
   button.btn-nueva:hover {
-    background-color: #c1c1c1; /* Cambia el color de fondo al pasar el mouse */
+    background-color: #c1c1c1; /*  Cambia el color de fondo al pasar el mouse */
   }
   
   .material-symbols-outlined {

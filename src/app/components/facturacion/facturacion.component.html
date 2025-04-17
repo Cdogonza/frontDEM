@@ -61,23 +61,23 @@
               <thead>
                 <tr>
                   <th class="hidden">ID Facturación</th>
-                  <th>Fecha</th>
+                  <th style="min-width: 100px; max-width: 200px;">Fecha</th>
                   <th>Empresa</th>
                   <th>Monto</th>
                   <th>Estado</th>
-                  <th>Observación</th>
-                  <th>Acciones</th>
+                  <th colspan="4">Observación</th>
+                  <th colspan="2">Acciones</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody style="font-size: 0.9rem;">
                 <tr *ngFor="let facturacion of filteredFacturaciones">
                   <td class="hidden">{{ facturacion.idfacturacion }}</td>
                   <td> {{ formatDate(facturacion.fecha)}} </td>
                   <td>{{ facturacion.empresa }}</td>
                   <td>{{ facturacion.monto | currency }}</td>
                   <td>{{ facturacion.estado }}</td>
-                  <td>{{ facturacion.observacion }}</td>
-                  <td>
+                  <td colspan="4">{{ facturacion.observacion }}</td>
+                  <td style="justify-self: center;" colspan="2">
                     <button (click)="moveClick(facturacion)"><span class="material-symbols-outlined">
                         attach_money
                       </span></button>
@@ -97,32 +97,29 @@
             <h5>Total de Gastos Previstos {{totalPendiente | currency}}</h5>
             <!-- Subtítulo "FACTURAS PAGAS" -->
             <h3 class="subtitulo">FACTURAS PAGAS</h3>
-<!-- white-space: pre-wrap; /* Respeta saltos de línea y espacios, pero hace wrap */
-  overflow: hidden; -->
-            <!-- Segunda tabla: Filas sin "pendiente" -->
             <table>
               <thead>
                 <tr>
                   <th class="hidden">ID Facturación</th>
-                  <th  >Fecha</th>
+                  <th style="min-width: 100px; max-width: 200px;">Fecha</th>
                   <th>Empresa</th>
                   <th>Monto</th>
                   <th>Estado</th>
-                  <th >Observación</th>
-                  <th >Acción</th>
+                  <th colspan="4">Observación</th>
+                  <th colspan="2">Acciones</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody style="font-size: 0.9rem;">
                 <tr *ngFor="let facturacion of pagadasFacturaciones">
                   <td class="hidden">{{ facturacion.idfacturacion }}</td>
-                  <td >{{ formatDate(facturacion.fecha) }}</td>
+                  <td> {{ formatDate(facturacion.fecha)}} </td>
                   <td>{{ facturacion.empresa }}</td>
                   <td>{{ facturacion.monto | currency }}</td>
                   <td>{{ facturacion.estado }}</td>
-                  <td  >{{ facturacion.observacion }}</td>
-                  <td >
-                    <button class="moneyOff" (click)="moveClick(facturacion)"><span class="material-symbols-outlined">
-                        money_off
+                  <td colspan="4">{{ facturacion.observacion }}</td>
+                  <td style="justify-self: center;" colspan="2">
+                    <button (click)="moveClick(facturacion)"><span class="material-symbols-outlined">
+                        attach_money
                       </span></button>
                     <button class="editButton" (click)="editAction(facturacion)"><span
                         class="material-symbols-outlined">
@@ -140,14 +137,31 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-2">
-      <h3 class="subtitulo">DATOS</h3>
-      <h5>Total G.PREV.: {{totalPendiente | currency }}</h5>
-      <h5>Total F.PAG.: {{totalPagado | currency }}</h5>
-      <h5>ING. MES.: {{totalEntrada | currency }}</h5>
-      <h5>Total CAJA: {{enCaja | currency }}</h5>
-    </div>
-  </div>
 
+    </div>
+    <div class="card2 col-md-2 p-2">
+      <div class="w-100">
+        <table class="table2 table-sm w-100">
+          <tbody>
+            <tr>
+              <th class="text-nowrap pe-1">G.PREV.: <strong>{{ totalPendiente | currency }}</strong></th>
+              <td></td>
+            </tr>
+            <tr>
+              <th class="text-nowrap pe-1">F.PAG.: <strong>{{ totalPagado | currency }}</strong></th>
+            </tr>
+            <tr>
+              <th class="text-nowrap pe-1">ING.MES.: <strong>{{ totalEntrada | currency }}</strong></th>
+            </tr>
+            <tr>
+              <th class="text-nowrap pe-1">CAJA: <strong>{{ enCaja | currency }}</strong></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>  
+    </div>
+    
+    
+  </div>
+  
 </div>

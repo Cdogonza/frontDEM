@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-
+import { environment } from '../envairoment';
 @Injectable({
   providedIn: 'root'
 })
 export class NovedadesService {
 
-   private apiUrl = 'https://back-prueba-dem.onrender.com/novedades'; // Cambia esto si es necesario
-   //private apiUrl = 'http://localhost:3000/novedades'; // Cambia esto si es necesario
+   private apiUrl =environment.apiUrl+'/novedades'; // Cambia esto si es necesario
+
 
     constructor(private http: HttpClient) { }
   

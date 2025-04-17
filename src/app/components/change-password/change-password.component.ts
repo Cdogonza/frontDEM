@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../envairoment';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class ChangePasswordComponent implements OnInit {
   changePasswordForm: FormGroup;
   message: string = '';
   error: string = '';
-
+ urll = environment.apiUrl; // URL de la API desde el archivo de entorno
   constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
     this.changePasswordForm = this.fb.group({
       oldPassword: ['', [Validators.required]],
@@ -30,7 +31,7 @@ export class ChangePasswordComponent implements OnInit {
 
   onSubmit() {
     if (this.changePasswordForm.valid) {
-      this.http.post<{ message: string }>('https://back-prueba-dem.onrender.com/auth/change-password', this.changePasswordForm.value, {
+      this.http.post<{ message: string }>(this.urll+'/auth/change-password', this.changePasswordForm.value, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}` // Asegúrate de que el token esté almacenado
         }

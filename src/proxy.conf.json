@@ -1,8 +1,0 @@
-{
-    "/auth": {
-      "target": "https://backpruebadem.vercel.app",
-      "secure": true,
-      "changeOrigin": true,
-      "logLevel": "debug"
-    }
-  }
