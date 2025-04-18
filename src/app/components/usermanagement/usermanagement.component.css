@@ -1,0 +1,59 @@
+.container {
+    padding: 20px;
+  }
+  
+  .actions-container {
+    margin-bottom: 20px;
+    text-align: right;
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .actions-column {
+    white-space: nowrap;
+  }
+  
+  .actions-column button {
+    margin-right: 5px;
+  }
+  
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    opacity: 0.5;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    outline: 0;
+  }
+  
+  .modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 1.75rem auto;
+    max-width: 500px;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .text-danger {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }

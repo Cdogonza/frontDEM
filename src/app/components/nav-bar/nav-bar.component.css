@@ -25,3 +25,83 @@ h3 {
 h5{
     margin: 10px 10px; /* Espacio superior e inferior para el subtítulo */
 }
+
+ /* Estilos para el panel de acciones de usuario */
+
+  
+
+  
+  .user-actions-header .material-symbols-outlined {
+    color: #007bff;
+    margin-right: 8px;
+    font-size: 20px;
+  }
+  
+  .user-actions-title {
+    font-weight: 600;
+    color: #495057;
+    font-size: 14px;
+  }
+  
+  .user-actions-content {
+    padding: 5px;
+
+  }
+  
+  .user-action-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    text-align: left;
+
+  }
+  
+  .user-action-btn .material-symbols-outlined {
+    margin-right: 8px;
+    font-size: 18px;
+  }
+  
+  .logout-btn {
+    background-color: #f8f9fa;
+    color: #dc3545;
+    border: 1px solid #f1f1f1;
+  }
+  
+  .logout-btn:hover {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .password-btn {
+    background-color: #f8f9fa;
+    color: #007bff;
+    border: 1px solid #f1f1f1;
+  }
+  
+  .password-btn:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 768px) {
+    .user-actions-panel {
+      margin-top: 15px;
+    }
+    
+    .user-actions-content {
+      padding: 10px;
+    }
+    
+    .user-action-btn {
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+  }

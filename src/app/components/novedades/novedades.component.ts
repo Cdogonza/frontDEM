@@ -9,12 +9,12 @@ import { ChangeDetectorRef } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { NovedadFormComponent } from '../../novedad-form/novedad-form.component';
 import { AuthService } from '../../services/auth.service';
-import { User } from '../../user.model'; 
+import { User } from '../../models/user'; 
 import { Router } from '@angular/router';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 @Component({
   selector: 'app-novedades',
-  imports: [NgStyle,NgFor,CommonModule,MatIconModule,HttpClientModule,NavBarComponent,RouterModule,NovedadFormComponent],
+  imports: [NgFor,CommonModule,MatIconModule,HttpClientModule,NavBarComponent,RouterModule,NovedadFormComponent],
   providers: [DatePipe,],
   templateUrl: './novedades.component.html',
   styleUrl: './novedades.component.css'

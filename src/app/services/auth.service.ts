@@ -44,8 +44,12 @@ export class AuthService implements OnInit {
 
     private apiUrl = environment.apiUrl; // Cambia esto si es necesario
 
-    register(username: string, password: string): Observable<any> {
-        return this.http.post(`${this.apiUrl}/register`, { username, password });
+    register(user:any): Observable<any> {
+        return this.http.post(`${this.apiUrl}/auth/register`,{user});
+    }
+
+    createNovedad(novedad: any): Observable<any> {
+      return this.http.post(this.apiUrl, novedad);
     }
 
     login(username: string, password: string): Observable<any> {
@@ -55,7 +59,10 @@ export class AuthService implements OnInit {
 
       
     resetPassword(email: string): Observable<any> {
-        return this.http.post(`${this.apiUrl}/reset-password`, { email });
+        return this.http.post(`${this.apiUrl}/auth/reset-password`, { email });
+    }
+    newPassword(token: string, password: string): Observable<any> {
+        return this.http.post(`${this.apiUrl}/auth/new-password`, { token, password });
     }
 
 
@@ -74,4 +81,25 @@ export class AuthService implements OnInit {
         localStorage.removeItem('user'); // Eliminar el usuario del almacenamiento local
         this.router.navigate(['/login']);
     }
+    getUsers(): Observable<any[]> {
+        return this.http.post<any[]>(`${this.apiUrl}/auth/getUsers`, {});
+      }
+      createUser(user: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/auth/register`, {user});
+      }
+    
+      getUserById(id: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/${id}`);
+      }
+    
+     
+    
+      updateUser(id: number, user: any): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/${id}`, user);
+      }
+    
+      deleteUser(id: number): Observable<any> {
+        return this.http.delete<any>(`${this.apiUrl}/${id}`);
+      }
+
 }

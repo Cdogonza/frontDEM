@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TallerService } from '../../services/taller.service';
 import { NgClass,NgIf } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { User } from '../../user.model'; 
+import { User } from '../../models/user'; 
 import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-for-taller',

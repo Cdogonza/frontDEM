@@ -2,7 +2,7 @@ import { Component,EventEmitter,Output,OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NovedadesService } from '../services/novedades.service';
 import { NgClass,NgIf } from '@angular/common';
-import { User } from '../user.model'; 
+import { User } from '../models/user';
 import { AuthService } from '../services/auth.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';

@@ -13,7 +13,7 @@ import { TallerService } from '../../services/taller.service';
 import { TallerComponent } from '../taller/taller.component';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { User } from '../../user.model';
+import { User } from '../../models/user';
 @Component({
   selector: 'app-home',
   standalone: true,

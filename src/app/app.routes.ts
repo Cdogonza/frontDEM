@@ -11,6 +11,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { FacturacionComponent } from './components/facturacion/facturacion.component';
 import { ReporteComponent } from './components/reporte/reporte.component';
 import { FacturacionFormComponent } from './components/facturacion-form/facturacion-form.component';
+import { UsermanagementComponent } from './components/usermanagement/usermanagement.component';
+import { NewpasswordComponent } from './components/newpassword/newpassword.component';
 export const routes: Routes = [
     {path: 'equipos', component: HomeComponent, canActivate: [AuthGuard]},
     {path: 'novedades', component: NovedadesComponent, canActivate: [AuthGuard]},
@@ -19,9 +21,11 @@ export const routes: Routes = [
     {path: 'taller', component: TallerComponent, canActivate: [AuthGuard]},
     {path: 'login', component: LoginComponent},
     {path: 'reset-password', component: ResetpasswordComponent},
+    {path: 'new-password/:token', component: NewpasswordComponent},
     {path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard]},
     {path: 'formulario', component: FacturacionFormComponent, canActivate: [AuthGuard]},
     {path: 'reporte', component: ReporteComponent, canActivate: [AuthGuard]},
     {path: 'facturacion', component: FacturacionComponent, canActivate: [AuthGuard]},
+    {path: 'usermanagement', component: UsermanagementComponent, canActivate: [AuthGuard]},
     {path: '', redirectTo: 'login', pathMatch: 'full'}
 ];

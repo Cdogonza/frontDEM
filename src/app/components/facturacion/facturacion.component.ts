@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PermissionService } from '../../services/permission.service';
 import { AuthService } from '../../services/auth.service';
-import { User } from '../../user.model';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-facturacion',
