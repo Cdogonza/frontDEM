@@ -28,8 +28,15 @@
             <li class="nav-item">
               <a class="nav-link" [routerLink]="'/facturacion'" routerLinkActive="active"  style="font-size: 20px; padding-right: 30px">FACTURACION</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" [routerLink]="'/usermanagement'" routerLinkActive="active"   style="font-size: 20px; padding-right: 30px">COMPRAS</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px; padding-right: 30px">
+                ADMIN
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" [routerLink]="'/usermanagement'" routerLinkActive="active">Gestión de Usuarios</a></li>
+                <li><a class="dropdown-item" [routerLink]="'/compras/otro-enlace'" routerLinkActive="active">Otro Enlace</a></li>
+                <!-- Agrega más elementos de menú según sea necesario -->
+              </ul>
             </li>
             <li class="nav-item">
               <a

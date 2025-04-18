@@ -95,11 +95,11 @@ export class AuthService implements OnInit {
      
     
       updateUser(id: number, user: any): Observable<any> {
-        return this.http.put<any>(`${this.apiUrl}/${id}`, user);
+        return this.http.post<any>(`${this.apiUrl}/auth/update-user/${id}`, {user});  
       }
     
       deleteUser(id: number): Observable<any> {
-        return this.http.delete<any>(`${this.apiUrl}/${id}`);
+        return this.http.post<any[]>(`${this.apiUrl}/auth/delete-user`, {id});
       }
 
 }

@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { environment } from '../../envairoment';
 import { AuthService } from '../../services/auth.service';
 
+
 @Component({
   selector: 'app-resetpassword',
   imports: [NgIf,ReactiveFormsModule,RouterModule],
@@ -35,6 +36,7 @@ export class ResetpasswordComponent {
     this.auth.resetPassword(this.resetForm.value).subscribe(
       (response) => {
         this.message = 'Se ha enviado un correo para restablecer la contraseña.';
+        this.router.navigate(['/login']); 
         this.error = '';
         console.log(response);
       },
