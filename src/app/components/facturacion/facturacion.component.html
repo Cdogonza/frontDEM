@@ -1,13 +1,38 @@
 <app-nav-bar></app-nav-bar>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
-<div class="container">
-  <div class="row">
-    <div class="col-md-10">
+<div class="container-fluid text-center">
+  <div class="row align-items-start ">
+    <!-- Columna lateral para los botones -->
+    <div class="col-2">
+      <div class="sidebar-buttons">
+        <button class="sidebar-btn" (click)="mostrarFormulario()">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span class="btn-text">Nueva Factura</span>
+        </button>
+        <button class="sidebar-btn" [routerLink]="'/cajamanager'">
+          <span class="material-symbols-outlined">mintmark</span>
+          <span class="btn-text">Caja</span>
+        </button>
+        <button class="sidebar-btn" (click)="exportPDF()">
+          <span class="material-symbols-outlined">lab_profile</span>
+          <span class="btn-text">Reporte</span>
+        </button>
+        <button class="sidebar-btn" (click)="cerrarMes()">
+          <span class="material-symbols-outlined">disabled_by_default</span>
+          <span class="btn-text">Cerrar Mes</span>
+        </button>
+      </div>
+      
+      <!-- Resumen financiero -->
+      
+    </div>
+    
+    <!-- Contenido principal -->
+    <div class="col-8">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title
-            ">Facturación</h4>
+          <h4 class="card-title">Facturación</h4>
         </div>
 
         <div id="content" class="table-container">
@@ -30,31 +55,6 @@
           <app-entrada-form *ngIf="mostrarFormEntrada"
             (closeFormEntrada)="ocultarFormularioEntrada()"></app-entrada-form>
           <div *ngIf="!mostrarForm && !mostrarFormEntrada && !cerrar">
-
-            <div class="button-container">
-              <button class="btn-nueva" (click)="mostrarFormulario()">
-                <span class="material-symbols-outlined">receipt_long</span>
-                Nueva Factura
-              </button>
-              <button class="btn-nueva" (click)="mostrarFormularioEntrada()">
-                <span class="material-symbols-outlined">
-                  mintmark
-                </span>
-                Entrada en Caja
-              </button>
-              <button class="btn-nueva" (click)="exportPDF()">
-                <span class="material-symbols-outlined">
-                  lab_profile
-                </span>
-                Reporte
-              </button>
-              <button class="btn-nueva" (click)="cerrarMes()">
-                <span class="material-symbols-outlined">
-                  disabled_by_default
-                </span>
-                Cerrar Mes
-              </button>
-            </div>
 
             <h3 class="subtitulo"> GASTOS PREVISTOS</h3>
             <table>
@@ -137,31 +137,30 @@
           </div>
         </div>
       </div>
-
     </div>
-    <div class="card2 col-md-2 p-2">
-      <div class="w-100">
-        <table class="table2 table-sm w-100">
-          <tbody>
-            <tr>
-              <th class="text-nowrap pe-1">G.PREV.: <strong>{{ totalPendiente | currency }}</strong></th>
-              <td></td>
-            </tr>
-            <tr>
-              <th class="text-nowrap pe-1">F.PAG.: <strong>{{ totalPagado | currency }}</strong></th>
-            </tr>
-            <tr>
-              <th class="text-nowrap pe-1">ING.MES.: <strong>{{ totalEntrada | currency }}</strong></th>
-            </tr>
-            <tr>
-              <th class="text-nowrap pe-1">CAJA: <strong>{{ enCaja | currency }}</strong></th>
-            </tr>
-          </tbody>
-        </table>
-      </div>  
+    <div class="col-2">
+      <div class="card2 p-2 mt-4">
+        <div class="w-100">
+          <table class="table2 table-sm w-100">
+            <tbody>
+              <tr>
+                <th class="text-nowrap pe-1">G.PREV.: <strong>{{ totalPendiente | currency }}</strong></th>
+                <td></td>
+              </tr>
+              <tr>
+                <th class="text-nowrap pe-1">F.PAG.: <strong>{{ totalPagado | currency }}</strong></th>
+              </tr>
+              <tr>
+                <th class="text-nowrap pe-1">ING.MES.: <strong>{{ totalEntrada | currency }}</strong></th>
+              </tr>
+              <tr>
+                <th class="text-nowrap pe-1">CAJA: <strong>{{ enCaja | currency }}</strong></th>
+              </tr>
+            </tbody>
+          </table>
+        </div>  
+      </div>
     </div>
-    
-    
   </div>
   
 </div>

@@ -11,11 +11,12 @@ import { FacturacionFormComponent } from '../facturacion-form/facturacion-form.c
 import { EntradaFormComponent } from '../entrada-form/entrada-form.component';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PermissionService } from '../../services/permission.service';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user';
+
 
 @Component({
   selector: 'app-facturacion',
@@ -28,6 +29,7 @@ import { User } from '../../models/user';
     FacturacionFormComponent,
     EntradaFormComponent,
     FormsModule,
+    RouterLink,
      ],
   templateUrl: './facturacion.component.html',
   styleUrls: ['./facturacion.component.css']

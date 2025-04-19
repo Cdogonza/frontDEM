@@ -15,15 +15,9 @@ export class FacturacionService {
   obtenerFacturaciones(): Observable<Facturacion[]> {
     return this.http.post<Facturacion[]>(this.apiUrl+'/getAll', {});
   }
-  obtenerEntradas(): Observable<Entrada[]> {
-    return this.http.post<Entrada[]>(this.apiUrl+'/getAllEntradas', {});
-  }
 
   crearFacturacion(facturacion: Facturacion): Observable<Facturacion> {
     return this.http.post<Facturacion>(this.apiUrl+'/insert', facturacion);
-  }
-  crearEntrada(entrada: Entrada): Observable<Entrada> {
-    return this.http.post<Entrada>(this.apiUrl+'/insertEntrada', entrada);
   }
 
   actualizarFacturacion(facturacion: Facturacion): Observable<Facturacion> {
@@ -54,5 +48,18 @@ export class FacturacionService {
   }
   cerrarCaja(mes: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/cerrarCaja`, {mes});
+  }
+//METODOS PARA LAS ENTRADAS 
+  obtenerEntradas(): Observable<Entrada[]> {
+    return this.http.post<Entrada[]>(this.apiUrl+'/getAllEntradas', {});
+  }
+  crearEntrada(entrada: Entrada): Observable<Entrada> {
+    return this.http.post<Entrada>(`${this.apiUrl}/insertEntrada`, {entrada});
+  }
+  updateEntrada(identrada: number, entrada: Entrada): Observable<Entrada> {
+    return this.http.post<Entrada>(`${this.apiUrl}/updateEntrada/${identrada}`, {entrada});
+  }
+  deleteEntrada(identrada: number): Observable<Entrada> {
+    return this.http.delete<Entrada>(`${this.apiUrl}/deleteEntrada/${identrada}`);
   }
 }

@@ -20,8 +20,9 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <h5>Bienvenido {{nombre}}</h5>
+
           <ul class="navbar-nav  mx-auto">
+            
             <li class="nav-item">
               <a class="nav-link" [routerLink]="'/novedades'" routerLinkActive="active" style="font-size: 20px; padding-right: 30px">NOVEDADES</a>
             </li>
@@ -34,7 +35,7 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" [routerLink]="'/usermanagement'" routerLinkActive="active">Gestión de Usuarios</a></li>
-                <li><a class="dropdown-item" [routerLink]="'/compras/otro-enlace'" routerLinkActive="active">Otro Enlace</a></li>
+
                 <!-- Agrega más elementos de menú según sea necesario -->
               </ul>
             </li>
@@ -47,18 +48,19 @@
             class="nav-link" style="font-size: 20px; padding-right: 30px">TALLER</a>
             </li>
 
+           
+            <li class="nav-item">
+              <button class="user-action-btn password-btn" (click)="resetPassword()">
+                <span class="material-symbols-outlined">lock_reset</span>
+                Cambiar Contraseña
+              </button>
+            </li>
             <li class="nav-item" >
               <button class="user-action-btn logout-btn" (click)="cerrarSesion()">
                 <span class="material-symbols-outlined">logout</span>
                 Cerrar Sesión
               </button>
             </li>
-            <li class="nav-item">
-              <button class="user-action-btn password-btn" (click)="resetPassword()">
-                <span class="material-symbols-outlined">lock_reset</span>
-                Cambiar Contraseña
-              </button>
-
           </ul>
 
         </div>

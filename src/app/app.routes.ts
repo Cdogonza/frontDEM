@@ -13,6 +13,8 @@ import { ReporteComponent } from './components/reporte/reporte.component';
 import { FacturacionFormComponent } from './components/facturacion-form/facturacion-form.component';
 import { UsermanagementComponent } from './components/usermanagement/usermanagement.component';
 import { NewpasswordComponent } from './components/newpassword/newpassword.component';
+
+import { adminguardGuard } from './adminguard.guard';
 export const routes: Routes = [
     {path: 'equipos', component: HomeComponent, canActivate: [AuthGuard]},
     {path: 'novedades', component: NovedadesComponent, canActivate: [AuthGuard]},
@@ -26,6 +28,25 @@ export const routes: Routes = [
     {path: 'formulario', component: FacturacionFormComponent, canActivate: [AuthGuard]},
     {path: 'reporte', component: ReporteComponent, canActivate: [AuthGuard]},
     {path: 'facturacion', component: FacturacionComponent, canActivate: [AuthGuard]},
-    {path: 'usermanagement', component: UsermanagementComponent, canActivate: [AuthGuard]},
+    {
+        path: 'unauthorized',
+        loadComponent: () => import('../app/components/unauthorized/unauthorized.component').then(m => m.UnauthorizedComponent)
+      },
+    {
+        path: 'usermanagement',
+        loadComponent: () => import('./components/usermanagement/usermanagement.component').then(m => m.UsermanagementComponent),
+        canActivate: [adminguardGuard],
+        data: {
+          allowedUsernames: ['gpaz']
+        }
+      },
+    {
+        path: 'cajamanager',
+        loadComponent: () => import('./components/cajamanager/cajamanager.component').then(m => m.CajamanagerComponent),
+        canActivate: [adminguardGuard],
+        data: {
+          allowedUsernames: ['gpaz','maolivera','mpediferro']
+        }
+      },
     {path: '', redirectTo: 'login', pathMatch: 'full'}
 ];

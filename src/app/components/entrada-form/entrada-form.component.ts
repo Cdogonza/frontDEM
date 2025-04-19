@@ -19,10 +19,14 @@ export class EntradaFormComponent implements OnInit{
   @Output() closeFormEntrada = new EventEmitter<void>(); // Evento para cerrar el formulario
   entrada: Entrada = {
     identrada: 0,
-    fecha: new Date().toISOString().split('T')[0], // Fecha actual por defecto
     monto: 0,
+    fecha: this.obtenerFechaActual(),
+    username: '',
+    motivo: ''
   };
-
+  obtenerFechaActual(): string {
+    return new Date().toISOString().split('T')[0];
+  }
   constructor(private facturacionService: FacturacionService) { 
   }
 

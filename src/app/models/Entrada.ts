@@ -1,5 +1,7 @@
 export interface Entrada {
-    identrada: number;
-    fecha: string;
-    monto: number;
+  identrada: number;
+  monto: number;
+  fecha: string;
+  username: string;
+  motivo: string;
   }

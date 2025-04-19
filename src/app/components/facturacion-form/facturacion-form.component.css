@@ -1,29 +1,243 @@
-/* facturacion-form.component.css */
- form {
-    max-width: 400px;
-    margin: 20px auto;
+/* Estilos generales del formulario */
+form {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+/* Contenedor de cada campo del formulario */
+form > div {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* Estilos para las etiquetas */
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #495057;
+  font-size: 14px;
+}
+
+/* Estilos comunes para todos los campos de entrada */
+input, select, textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 15px;
+  color: #333;
+  transition: all 0.2s ease-in-out;
+  background-color: #f8f9fa;
+}
+
+/* Estilos específicos para el campo de fecha */
+input[type="date"] {
+  padding: 11px 15px;
+}
+
+/* Estilos específicos para el campo de número */
+input[type="number"] {
+  padding-right: 10px;
+}
+
+/* Estilos para el textarea */
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Estilos para el estado de focus de los campos */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #62a8d1;
+  box-shadow: 0 0 0 3px rgba(98, 168, 209, 0.25);
+  background-color: #fff;
+}
+
+/* Estilos para el select */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23495057' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  padding-right: 40px;
+}
+
+/* Contenedor de botones */
+form > div:last-of-type {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+/* Estilos para los botones */
+button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.buttons{
+  display:flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+/* Botón de envío (Guardar/Actualizar) */
+button[type="submit"] {
+  background-color: #62a8d1;
+  color: white;
+}
+
+button[type="submit"]:hover {
+  background-color: #4a90c3;
+  box-shadow: 0 4px 8px rgba(74, 144, 195, 0.2);
+}
+
+/* Botón de cancelar */
+button[type="button"] {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #ced4da;
+}
+
+button[type="button"]:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+/* Estilos para campos requeridos */
+input:required, select:required {
+  border-left: 3px solid #62a8d1;
+}
+
+/* Estilos para campos inválidos */
+input.ng-invalid.ng-touched, 
+select.ng-invalid.ng-touched, 
+textarea.ng-invalid.ng-touched {
+  border-color: #dc3545;
+}
+
+/* Mensaje de error para campos inválidos */
+.error-message {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Estilos para campos válidos */
+input.ng-valid.ng-touched:not(form), 
+select.ng-valid.ng-touched:not(form), 
+textarea.ng-valid.ng-touched:not(form) {
+  border-color: #28a745;
+}
+
+/* Animación de carga para el botón de envío */
+button[type="submit"].loading {
+  position:absolute;
+  color: transparent;
+}
+
+button[type="submit"].loading::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  form {
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #a09898;
-  }
-  
-  form div {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  input, select, textarea {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
+    margin: 15px;
   }
   
   button {
-    margin-right: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
   }
+  
+  form > div:last-of-type {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  button {
+    width: 100%;
+  }
+}
+
+/* Estilos para pantallas más pequeñas */
+@media (max-width: 480px) {
+  label {
+    font-size: 13px;
+  }
+  
+  input, select, textarea {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+
+/* Estilos para el modo oscuro (opcional) */
+@media (prefers-color-scheme: dark) {
+  form {
+    background-color: #d4d4d4;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  label {
+    color: #111111;
+  }
+  
+  input, select, textarea {
+    background-color: #3a4a5e3d;
+    border-color: #4a556856;
+    color: #1f1f1f;
+  }
+  
+  input:focus, select:focus, textarea:focus {
+    border-color: #4a556856;
+    box-shadow: 0 0 0 3px rgba(98, 168, 209, 0.25);
+    background-color: #3a4a5e3d;
+  }
+  
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23e2e8f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  }
+  
+  button[type="button"] {
+    background-color: #4a5568;
+    color: #e2e8f0;
+    border-color: #2d3748;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #3a4a5e;
+    color: #e2e8f0;
+  }
+}
