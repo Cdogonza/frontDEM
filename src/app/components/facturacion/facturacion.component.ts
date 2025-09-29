@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { PermissionService } from '../../services/permission.service';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user';
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -44,6 +45,7 @@ export class FacturacionComponent implements OnInit {
   totalPagado: string = ""; // Total de facturaciones pendientes
   totalEntrada: string = ""; // Total de facturaciones pendientes
   enCaja: string = ""; // Total de facturaciones pendientes
+  enCajaPrioritario: string = ""; // Total de facturaciones pendientes
   fecha = new Date();
   datePipe: DatePipe = new DatePipe('en-US');
   fechaHoy: string = this.datePipe.transform(this.fecha, 'yyyy-MM-dd') || '';
@@ -56,7 +58,7 @@ export class FacturacionComponent implements OnInit {
   loggedUser : User | null = null; // Usuario logueado
   currentUser: string = '';
   userPermissions: string[] = [];
-
+  allPrioritized: boolean = false;
 
   constructor(private facturacionService: FacturacionService,private router: Router,private permissionService: PermissionService, private authService: AuthService) {
     // Inicializa la fecha de hoy
@@ -64,8 +66,43 @@ export class FacturacionComponent implements OnInit {
     this.fechaHoy = this.datePipe.transform(this.fecha, 'yyyy-MM-dd') || '';
     
   }
+    exportToExcel(): void {
+    // Crear una hoja de trabajo (worksheet)
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.pagadasFacturaciones);
     
-   
+    // Crear un libro de trabajo (workbook)
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'DatosExportados'); // 'DatosExportados' es el nombre de la hoja
+
+    // Guardar el archivo
+    XLSX.writeFile(wb, 'datos_exportados.xlsx');
+  }
+   exportToExcelPrevistos(): void {
+    // Crear una hoja de trabajo (worksheet)
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredFacturaciones);
+    
+    // Crear un libro de trabajo (workbook)
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'DatosExportados'); // 'DatosExportados' es el nombre de la hoja
+
+    // Guardar el archivo
+    XLSX.writeFile(wb, 'datos_exportados.xlsx');
+  }
+
+ updatePriority(facturacion: Facturacion): void {
+
+  this.facturacionService.updatePriority(facturacion).subscribe(
+    (data: Facturacion) => {
+      Notify.success('Prioridad Actualizada');
+      this.cargarFacturaciones();
+    },
+    (error) => {
+      Notify.failure('Error al actualizar la prioridad');
+      console.error('Error:', error);
+    }
+  );
+  this.cargarFacturaciones();
+  }
 
 
   ngOnInit(): void {
@@ -73,9 +110,9 @@ export class FacturacionComponent implements OnInit {
     this.currentUser = this.loggedUser?.username || '';
     if (this.currentUser) {
       this.userPermissions = this.permissionService.getUserPermissions(this.currentUser);
-      console.log(this.currentUser);
     }
     this.totalEnCaja();
+    this.totalEnCajaPrioritario();
     this.cargarFacturaciones();
     this.getTotalPendiente();
     this.getTotalPagado();
@@ -121,7 +158,7 @@ Notify.warning('Seleccione un mes para cerrar');
   }
 
   if (confirm('¿Está seguro que desea cerrar el mes? Los datos se moverán al historial y se eliminarán de facturación.')) {
-    this.facturacionService.cerrarCaja(this.mesSeleccionado).subscribe(
+    this.facturacionService.cerrarCaja(this.mesSeleccionado, this.currentUser).subscribe(
       (response) => {
         Notify.success('Mes cerrado correctamente');
         this.cargarFacturaciones();
@@ -223,6 +260,7 @@ editarItem() {
   }
    cargarFacturaciones(): void {
     this.totalEnCaja();
+    this.totalEnCajaPrioritario();
     this.facturacionService.obtenerFacturaciones().subscribe(
       (data: Facturacion[]) => {
         this.facturaciones = data;
@@ -332,6 +370,22 @@ editarItem() {
       (error) => {
         console.error('Error al obtener el total caja', error);
         this.enCaja = 'Error al cargar el total caja';
+      }
+    );
+  }
+    totalEnCajaPrioritario(): void {
+
+    this.facturacionService.getTotalCajaPrioritario().subscribe(
+      (data: number) => {
+        const jsonString = JSON.stringify(data); // Convierte el objeto a string
+        console.log('Caja:', jsonString); // Depuración
+
+        const parsedObject = JSON.parse(jsonString); // Convierte el string de vuelta a objeto
+        this.enCajaPrioritario = parsedObject.totalPrioritario.toString(); // Extrae el valor de `total` // Extrae el valor de `total`
+      },
+      (error) => {
+        console.error('Error al obtener el total caja', error);
+        this.enCajaPrioritario = 'Error al cargar el total caja';
       }
     );
   }

@@ -29,8 +29,8 @@ export class CajamanagerComponent implements OnInit {
   entradaSeleccionada: Entrada | null = null;
   mensaje: string = '';
   tipoMensaje: 'success' | 'error' = 'success';
-  loggedUser : User | null = null; // Usuario logueado
-  // Filtros
+  loggedUser : User | null = null;
+  currentUser: string = '';
   filtroConcepto: string = '';
   filtroUsuario: string = '';
   filtroFecha: string = '';
@@ -40,14 +40,17 @@ export class CajamanagerComponent implements OnInit {
       id: [null],
       monto: [null, [Validators.required, Validators.min(0.01)]],
       fecha: [this.obtenerFechaActual(), Validators.required],
-      username: ['', Validators.required],
+      username:['', Validators.required],
       motivo: ['', Validators.required]
     });
+    console.log(this.currentUser);
   }
 
   ngOnInit(): void {
     this.cargarEntradas();
-    this.loggedUser  = this.authservice.getLoggedUser (); // Obtener el usuario logueado
+    this.loggedUser  = this.authservice.getLoggedUser(); // Obtener el usuario logueado
+    this.currentUser = this.loggedUser?.username || ''; // Obtener el email del usuario logueado
+  
   }
 
   cargarEntradas(): void {
@@ -66,7 +69,8 @@ export class CajamanagerComponent implements OnInit {
   openEntradaModal(): void {
     this.modoEdicion = false;
     this.entradaForm.reset({
-      fecha: this.obtenerFechaActual()
+      fecha: this.obtenerFechaActual(),
+      username: this.currentUser,
     });
     this.showModal = true;
   }
@@ -83,7 +87,7 @@ export class CajamanagerComponent implements OnInit {
       id: entrada.identrada,
       monto: entrada.monto,
       fecha: fechaFormateada,
-      username: entrada.username,
+      username: this.currentUser,
       motivo: entrada.motivo
     });
     

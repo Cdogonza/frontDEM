@@ -1,0 +1,71 @@
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<<div class="modal" tabindex="-1" role="dialog" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="justify-content:center;">
+        <h5 class="modal-title" >Agregar Documento</h5>
+        <button type="button" class="close" (click)="closeModal()"  style="background: none; border: none;"><span class="material-symbols-outlined">close </span></button>
+      </div>
+      <div class="modal-body" >
+        <form [formGroup]="documentoForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" formControlName="fecha" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" formControlName="nombre" class="form-control" placeholder={{loggedUser?.username}}/>
+            <div *ngIf="documentoForm.get('nombre')?.invalid && (documentoForm.get('nombre')?.dirty || documentoForm.get('nombre')?.touched)" class="text-danger">
+              El nombre es requerido.
+            </div>
+          </div>
+          <div class="form-group">
+              <label for="documento">Documento</label>
+              <input type="text" id="documento" formControlName="documento" class="form-control" />
+              <div *ngIf="documentoForm.get('documento')?.invalid && (documentoForm.get('documento')?.dirty || documentoForm.get('documento')?.touched)" class="text-danger">
+                El documento es requerido.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="matricula">Matricula</label>
+              <input type="text" id="matricula" formControlName="matricula" class="form-control" />
+              <div *ngIf="documentoForm.get('matricula')?.invalid && (documentoForm.get('matricula')?.dirty || documentoForm.get('matricula')?.touched)" class="text-danger">
+               La matricula es requerida.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="procedencia">Procedencia</label>
+              <input type="text" id="procedencia" formControlName="procedencia" class="form-control" />
+              <div *ngIf="documentoForm.get('procedencia')?.invalid && (documentoForm.get('procedencia')?.dirty || documentoForm.get('procedencia')?.touched)" class="text-danger">
+                La procedencia es requerida.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="asunto">Asunto</label>
+              <input type="text" id="asunto" formControlName="asunto" class="form-control" />
+              <div *ngIf="documentoForm.get('asunto')?.invalid && (documentoForm.get('asunto')?.dirty || documentoForm.get('asunto')?.touched)" class="text-danger">
+                El asunto es requerido.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="seccion">Sección</label>
+              <select id="seccion" formControlName="seccion" class="form-control">
+                <option value="">Seleccione una sección</option>
+                <option value="jefatura">Jefatura</option>
+                <option value="secretaria">Secretaría</option>
+                <option value="taller">Taller</option>
+                <option value="facturacion">Facturación</option>
+                <option value="compras">Compras</option>
+              </select>
+              <div *ngIf="documentoForm.get('seccion')?.invalid && (documentoForm.get('seccion')?.dirty || documentoForm.get('seccion')?.touched)" class="text-danger">
+                La sección es requerida.
+              </div>
+            </div>
+          <button type="submit" class="btn btn-primary" [disabled]="documentoForm.invalid">Enviar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

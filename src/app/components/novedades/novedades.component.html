@@ -2,59 +2,93 @@
 
 <!-- <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" /> -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <app-novedad-form *ngIf="showForm" (close)="closeForm()"></app-novedad-form>
-
+<app-documentos *ngIf="showDocumentosForm" (close)="closeDocumentosForm()"></app-documentos>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-1">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckChecked" 
+                       [(ngModel)]="verDoc" (change)="onSwitchChange()" checked>
+                <label *ngIf="!verDoc"class="form-check-label" for="switchCheckChecked">Novedades</label>
+                <label *ngIf="verDoc"class="form-check-label" for="switchCheckChecked">Documentos</label>
+              </div>
+              
             <ul class="nav flex-column">
+                <!-- Sección Novedades -->
                 <li class="nav-item contenido-central">
-                    <button class="btnNuevo"
-                        
-                        (click)="openNovedadForm()"><span class="material-symbols-outlined">
-                            assignment_add
-                        </span>Nueva</button>
+                    <h6 class="sidebar-subtitle">Novedades</h6>
                 </li>
                 <li class="nav-item contenido-central">
-                    <button class="btnNuevo"
-                        
-                        (click)="loadNovedadesTodas()"><span class="material-symbols-outlined">
-                            library_books
-                        </span>Todas</button>
+                    <button class="btnNuevo" (click)="openNovedadForm()">
+                        <span class="material-symbols-outlined">assignment_add</span>Nuevo
+                    </button>
                 </li>
                 <li class="nav-item contenido-central">
-                    <button class="btnNuevo"
-                       
-                        (click)="loadNovedadesHoy()"><span class="material-symbols-outlined">
-                            today
-                        </span>Hoy</button>
+                    <button class="btnNuevo" (click)="loadNovedadesHoy()">
+                        <span class="material-symbols-outlined">today</span>Hoy
+                    </button>
+                </li>
+
+                <li class="nav-item contenido-central">
+                    <button class="btnNuevo" (click)="loadNovedadesTodas()">
+                        <span class="material-symbols-outlined">library_books</span>Todas
+                    </button>
+                </li>
+        
+                <!-- Sección Documentación -->
+                <li class="nav-item contenido-central">
+                    <h6 class="sidebar-subtitle">Documentación</h6>
+                </li>
+
+                <li class="nav-item contenido-central">
+                    <button class="btnNuevo" (click)="openDocumentosForm()">
+                        <span class="material-symbols-outlined">add</span>Nuevo Doc.
+                    </button>
                 </li>
             </ul>
         </div>
         <div class="col-md-11">
             <div class="card">
 
+                
+                                <div class="col-md-11 ">
+                                    <table *ngIf="!verDoc" class="table">
 
-
-                <div class="col-md-11 ">
-                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="search" class="form-control rounded" placeholder="Por Nombre..."
+                                                        (input)="filtrarNombre($event)" aria-label="Buscar equipos"></td>
+                                                <td><input type="search" class="form-control rounded" placeholder="Por novedad..."
+                                                        (input)="filtrarNovedad($event)" aria-label="Buscar equipos"></td>
+                                                <td style="color: white;">edsfdsfdsrerer</td>
+                                                <td style="color: white;">edsfsdfdsfrerer</td>
+                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                    <table *ngIf="verDoc" class="table">
 
                         <tbody>
                             <tr>
-                                <td><input type="search" class="form-control rounded" placeholder="Por Nombre..."
-                                        (input)="filtrarNombre($event)" aria-label="Buscar equipos"></td>
-                                <td><input type="search" class="form-control rounded" placeholder="Por novedad..."
-                                        (input)="filtrarNovedad($event)" aria-label="Buscar equipos"></td>
+                                <td><input type="search" class="form-control rounded" placeholder="Por documento..."
+                                        (input)="filtrarDocumento($event)" aria-label="Buscar equipos"></td>
+                                <td><input type="search" class="form-control rounded" placeholder="Por asunto..."
+                                        (input)="filtrarAsunto($event)" aria-label="Buscar equipos"></td>
                                 <td style="color: white;">edsfdsfdsrerer</td>
                                 <td style="color: white;">edsfsdfdsfrerer</td>
 
                             </tr>
                         </tbody>
                     </table>
-                    <table class="table">
+                    <table *ngIf="!verDoc" class="table">
+           
                         <thead>
+                            
                             <tr>
+                               
                                 <th style="min-width: 150px; max-width: 200px;">FECHA</th>
                                 <th> NOMBRE</th>
                                 <th colspan="4">NOVEDAD</th>
@@ -62,13 +96,62 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let novedad of novedadesFiltrados">
+                            <tr *ngFor="let novedad of novedadesPaginados">
                                 <td>{{ formatDate(novedad.fecha)}}</td>
                                 <td>{{ novedad.nombre}}</td>
                                 <td colspan="4">{{ novedad.novedad }}</td>
                             </tr>
                         </tbody>
                     </table>
+                    
+                    <!-- Controles de paginación para novedades -->
+                    <div *ngIf="!verDoc && totalPagesNovedades > 1" class="pagination">
+                        <button class="page-btn" (click)="goToPageNovedades(currentPageNovedades - 1)" [disabled]="currentPageNovedades === 1">
+                            <span class="material-symbols-outlined">arrow_back_ios</span>
+                        </button>
+                        <span class="page-info">Página {{ currentPageNovedades }} de {{ totalPagesNovedades }}</span>
+                        <button class="page-btn" (click)="goToPageNovedades(currentPageNovedades + 1)" [disabled]="currentPageNovedades === totalPagesNovedades">
+                            <span class="material-symbols-outlined">arrow_forward_ios</span>
+                        </button>
+                    </div>
+                    
+                    <table *ngIf="verDoc" class="table">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 150px; max-width: 200px;">FECHA</th>
+                                <th> NOMBRE</th>
+                                <th >DOCUMENTO</th>
+                                <th >MATRICULA</th>
+                                <th >PROCEDENCIA</th>
+                                <th >ASUNTO</th>
+                                <th >LUGAR</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let documento of documentosPaginados">
+                                <td>{{ formatDate(documento.fecha)}}</td>
+                                <td>{{ documento.nombre}}</td>
+                                <td >{{ documento.documento }}</td>
+                                <td >{{ documento.matricula }}</td>
+                                <td >{{ documento.procedencia }}</td>
+                                <td >{{ documento.asunto }}</td>
+                                <td >{{ documento.seccion }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Controles de paginación para documentos -->
+                    <div *ngIf="verDoc && totalPagesDocumentos > 1" class="pagination">
+                        <button class="page-btn" (click)="goToPageDocumentos(currentPageDocumentos - 1)" [disabled]="currentPageDocumentos === 1">
+                            <span class="material-symbols-outlined">arrow_back_ios</span>
+                        </button>
+                        <span class="page-info">Página {{ currentPageDocumentos }} de {{ totalPagesDocumentos }}</span>
+                        <button class="page-btn" (click)="goToPageDocumentos(currentPageDocumentos + 1)" [disabled]="currentPageDocumentos === totalPagesDocumentos">
+                            <span class="material-symbols-outlined">arrow_forward_ios</span>
+                        </button>
+                    </div>
+                    
                     <!-- <p>Tu correo electrónico es: {{ loggedUser?.username }}</p> -->
                 </div>
             </div>

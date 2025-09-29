@@ -26,8 +26,12 @@ export class ReporteComponent implements OnInit{
   entrada: Entrada[] = [];
   filteredFacturaciones: Facturacion[] = []; // Filas sin "pagado"
   pagadasFacturaciones: Facturacion[] = []; // Filas sin "pendiente"
+  entradasDelMes: Entrada[] = []; // Entradas filtradas por mes
+  facturasPagasDelMes: Facturacion[] = []; // Facturas pagas filtradas por mes
   totalPagado: string = ""; // Total de facturaciones pendientes
   totalEntrada: string = ""; // Total de facturaciones pendientes
+  totalEntradasMes: string = ""; // Total de entradas del mes
+  totalFacturasPagasMes: string = ""; // Total de facturas pagas del mes
   enCaja: string = ""; // Total de facturaciones pendientes
   fecha = new Date();
   datePipe: DatePipe = new DatePipe('en-US');
@@ -37,6 +41,8 @@ export class ReporteComponent implements OnInit{
     'JULIO', 'AGOSTO', 'SETIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
   ];
   mesSeleccionado: string = '';
+  mesSeleccionadoNumero: number = 0;
+  Number = Number; // Make Number available in template
   constructor(private facturacionService: FacturacionService,private router: Router) {
     
    }
@@ -49,14 +55,78 @@ export class ReporteComponent implements OnInit{
   }
   cambiarMes(event: any) {
     this.mesSeleccionado = event.target.value;
+    this.mesSeleccionadoNumero = this.obtenerNumeroMes(this.mesSeleccionado);
+    this.filtrarDatosPorMes();
+  }
+
+  obtenerNumeroMes(mes: string): number {
+    const mesesMap: { [key: string]: number } = {
+      'ENERO': 1, 'FEBRERO': 2, 'MARZO': 3, 'ABRIL': 4, 'MAYO': 5, 'JUNIO': 6,
+      'JULIO': 7, 'AGOSTO': 8, 'SETIEMBRE': 9, 'OCTUBRE': 10, 'NOVIEMBRE': 11, 'DICIEMBRE': 12
+    };
+    return mesesMap[mes] || 0;
+  }
+
+  filtrarDatosPorMes(): void {
+    if (this.mesSeleccionadoNumero === 0) return;
+
+    // Filtrar entradas del mes seleccionado
+    this.entradasDelMes = this.entrada.filter(entrada => {
+      const fechaEntrada = new Date(entrada.fecha);
+      return fechaEntrada.getMonth() + 1 === this.mesSeleccionadoNumero;
+    });
+
+    // Filtrar facturas pagas del mes seleccionado
+    this.facturasPagasDelMes = this.pagadasFacturaciones.filter(factura => {
+      const fechaFactura = new Date(factura.fecha);
+      return fechaFactura.getMonth() + 1 === this.mesSeleccionadoNumero;
+    });
+
+    // Calcular totales del mes
+    this.calcularTotalesDelMes();
+  }
+
+  calcularTotalesDelMes(): void {
+    // Total de entradas del mes
+    const totalEntradas = this.entradasDelMes.reduce((sum, entrada) => sum + Number(entrada.monto), 0);
+    this.totalEntradasMes = totalEntradas.toFixed(2);
+
+    // Total de facturas pagas del mes
+    const totalFacturas = this.facturasPagasDelMes.reduce((sum, factura) => sum + Number(factura.monto), 0);
+    this.totalFacturasPagasMes = totalFacturas.toFixed(2);
   }
   formatDate(dateString: string): string {
     const dateObject = new Date(dateString);
     return dateObject.toISOString().split('T')[0];
   }
 exportPDF() {
+  if (!this.mesSeleccionado) {
+    alert('Por favor, seleccione un mes antes de generar el reporte.');
+    return;
+  }
+
   const data = document.getElementById('content');
-  html2canvas(data!).then(canvas => {
+  if (!data) {
+    alert('No se pudo generar el reporte. Intente nuevamente.');
+    return;
+  }
+
+  // Mostrar indicador de carga
+  Loading.init({
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    messageColor: '#fff',
+    messageFontSize: '16px'
+  });
+  Loading.standard('Generando reporte PDF...');
+
+  html2canvas(data, {
+    scale: 2, // Mejor calidad
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: '#ffffff'
+  }).then(canvas => {
+    Loading.remove();
+    
     // Cambiar la orientación a horizontal ('l' en lugar de 'p')
     const pdf = new jsPDF.jsPDF('l', 'mm', 'a4'); // 'l' = landscape (horizontal)
     
@@ -68,7 +138,22 @@ exportPDF() {
     const position = 1;
     
     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-    pdf.save(this.mesSeleccionado + '.pdf');
+    
+    // Generar nombre del archivo con fecha
+    const fecha = new Date();
+    const fechaStr = fecha.getFullYear() + '-' + 
+                    String(fecha.getMonth() + 1).padStart(2, '0') + '-' + 
+                    String(fecha.getDate()).padStart(2, '0');
+    const nombreArchivo = `Reporte_Fondo_Rotatorio_${this.mesSeleccionado}_${fechaStr}.pdf`;
+    
+    pdf.save(nombreArchivo);
+    
+    // Mostrar mensaje de éxito
+    Notify.success('Reporte generado exitosamente');
+  }).catch(error => {
+    Loading.remove();
+    console.error('Error al generar PDF:', error);
+    Notify.failure('Error al generar el reporte PDF');
   });
 }
 cancelarReporte(): void {

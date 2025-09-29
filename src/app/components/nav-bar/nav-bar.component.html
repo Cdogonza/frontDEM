@@ -27,6 +27,12 @@
               <a class="nav-link" [routerLink]="'/novedades'" routerLinkActive="active" style="font-size: 20px; padding-right: 30px">NOVEDADES</a>
             </li>
             <li class="nav-item">
+              <a [routerLink]="'/secretaria'" routerLinkActive="active" class="nav-link"  style="font-size: 20px; padding-right: 30px">TALLER</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="'/compras'" routerLinkActive="active" style="font-size: 20px; padding-right: 30px">COMPRAS</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" [routerLink]="'/facturacion'" routerLinkActive="active"  style="font-size: 20px; padding-right: 30px">FACTURACION</a>
             </li>
             <li class="nav-item dropdown">
@@ -39,16 +45,10 @@
                 <!-- Agrega más elementos de menú según sea necesario -->
               </ul>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a
-            class="nav-link" style="font-size: 20px; padding-right: 30px">EQUIPOS</a>
-            </li>
-            <li class="nav-item">
-              <a
-            class="nav-link" style="font-size: 20px; padding-right: 30px">TALLER</a>
-            </li>
-
-           
+            class="nav-link" style="font-size: 20px; padding-right: 30px">SECRETARIA</a>
+            </li> -->
             <li class="nav-item">
               <button class="user-action-btn password-btn" (click)="resetPassword()">
                 <span class="material-symbols-outlined">lock_reset</span>

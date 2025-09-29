@@ -61,6 +61,51 @@ loadUsers(): void {
     this.userForm.get('password')?.updateValueAndValidity();
     this.showModal = true;
   }
+resetPass(email: string): void {
+
+    Swal.fire({
+      title: '¿Estás seguro que desea resetear la contraseña de '+email+'?',
+      text: "No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, resetear',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) { // Si el usuario confirma
+
+        this.userService.resetPasswordDefault(email).subscribe(
+          () => {
+            Notify.success('Contraseña reseteada exitosamente', {
+              position: 'right-top',
+              timeout: 2000,
+              clickToClose: true,
+              });
+            Loading.remove();
+          },
+          (error) => {
+            console.error('Error al resetear contraseña:', error);
+            Loading.remove();
+            if (error.status === 404) {
+              Notify.failure('Error: El endpoint de reset de contraseña no está disponible en el servidor', {
+                position: 'right-top',
+                timeout: 5000,
+                clickToClose: true,
+              });
+            } else {
+              Notify.failure('Error al resetear la contraseña: ' + (error.error?.message || error.message || 'Error desconocido'), {
+                position: 'right-top',
+                timeout: 3000,
+                clickToClose: true,
+              });
+            }
+          }
+        );
+      }
+    });
+
+}
 
   editUser(user: User): void {
     this.isEditing = true;

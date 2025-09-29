@@ -23,6 +23,9 @@ export class FacturacionService {
   actualizarFacturacion(facturacion: Facturacion): Observable<Facturacion> {
     return this.http.post<Facturacion>(`${this.apiUrl}/update`, facturacion);
   }
+   updatePriority(facturacion: Facturacion) {
+    return this.http.post<Facturacion>(`${this.apiUrl}/updatePrioridad`, facturacion);
+  }
 
   eliminarFacturacion(idfacturacion: number): Observable<Facturacion> {
     return this.http.delete<Facturacion>(`${this.apiUrl}/delete/${idfacturacion}`);
@@ -43,11 +46,14 @@ export class FacturacionService {
   getTotalCaja(): Observable<number> {
     return this.http.post<number>(`${this.apiUrl}/totalCaja`, {});
   }
+  getTotalCajaPrioritario(): Observable<number> {
+    return this.http.post<number>(`${this.apiUrl}/totalCajaPrioritario`, {});
+  }
   cerrarMes(mes: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/cerrar-mes`, { mes });
   }
-  cerrarCaja(mes: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/cerrarCaja`, {mes});
+  cerrarCaja(mes: string, user: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/cerrarCaja`, {mes, user});
   }
 //METODOS PARA LAS ENTRADAS 
   obtenerEntradas(): Observable<Entrada[]> {
@@ -62,4 +68,5 @@ export class FacturacionService {
   deleteEntrada(identrada: number): Observable<Entrada> {
     return this.http.delete<Entrada>(`${this.apiUrl}/deleteEntrada/${identrada}`);
   }
+ 
 }

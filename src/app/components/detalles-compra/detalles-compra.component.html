@@ -1,0 +1,589 @@
+<app-nav-bar></app-nav-bar>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-10">
+      
+      <!-- Header con botón de volver -->
+      <div class="header-section">
+        <button class="btn-volver" (click)="volverACompras()">
+          <span class="material-symbols-outlined">arrow_back</span>
+          Volver a Compras
+        </button>
+        <h2 class="titulo-detalles">Detalles de la Compra</h2>
+
+
+      </div>
+
+      <!-- Indicador de carga -->
+      <div *ngIf="cargando" class="loading-container">
+        <div class="spinner"></div>
+        <p>Cargando detalles...</p>
+      </div>
+
+      <!-- Card de detalles -->
+      <div *ngIf="!cargando && compra" class="detalles-card">
+        
+        <!-- Header de la card -->
+        <div class="card-header">
+          <h3>Detalles de la Compra</h3>
+          <span class="numero-compra">ID: {{ compra.id || compra.nro_compra || compra.numero }}</span>
+        </div>
+
+        <!-- Contenido de la card -->
+        <div class="card-content">
+          <div class="data-grid">
+            <!-- Columna izquierda -->
+            <div class="data-column">
+              <div class="data-row">
+                <div class="data-label">ID:</div>
+                <div class="data-value">{{ compra.id || 'N/A' }}</div>
+              </div>
+              
+              <div class="data-row">
+                <div class="data-label">Memo:</div>
+                <div class="data-value">{{ compra.memo || 'N/A' }}</div>
+              </div>
+              
+                             <div class="data-row">
+                 <div class="data-label">Número:</div>
+                 <div class="data-value">{{ compra.numero || 'N/A' }}</div>
+               </div>
+               
+               <div class="data-row">
+                 <div class="data-label">Nombre:</div>
+                 <div class="data-value">{{ compra.nombre || 'N/A' }}</div>
+               </div>
+               
+               <div class="data-row">
+                 <div class="data-label">Tipo:</div>
+                 <div class="data-value">{{ compra.tipo || 'N/A' }}</div>
+               </div>
+
+              
+              <div class="data-row">
+                <div class="data-label">Monto:</div>
+                <div class="data-value">{{ compra.monto ? '$' + compra.monto.toLocaleString('es-AR') : 'N/A' }}</div>
+              </div>
+            </div>
+            
+            <!-- Columna derecha -->
+            <div class="data-column">
+              <div class="data-row">
+                <div class="data-label">Rubro:</div>
+                <div class="data-value">{{ compra.rubro || 'N/A' }}</div>
+              </div>
+              
+              <div class="data-row">
+                <div class="data-label">Resolución:</div>
+                <div class="data-value">{{ compra.resolucion || 'N/A' }}</div>
+              </div>
+              
+              <div class="data-row">
+                <div class="data-label">Monto Resolución Final:</div>
+                <div class="data-value">{{ compra.monto_resol_final ? '$' + compra.monto_resol_final.toLocaleString('es-AR') : 'N/A' }}</div>
+              </div>
+              
+              <div class="data-row">
+                <div class="data-label">Trimestre:</div>
+                <div class="data-value">{{ compra.trimestre || 'N/A' }}</div>
+              </div>
+              
+              <div class="data-row">
+                <div class="data-label">Estado:</div>
+                <div class="data-value">{{ compra.estado || 'N/A' }}</div>
+              </div>
+              
+              <div class="data-row">
+                <div class="data-label">Observaciones:</div>
+                <div class="data-value">{{ compra.obs || 'N/A' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+                 <!-- Acciones -->
+         <div class="card-actions">
+           <button class="btn-accion btn-editar" (click)="abrirFormularioEdicion()">
+             <span class="material-symbols-outlined">edit</span>
+             Editar
+           </button>
+           <button class="btn-accion btn-eliminar">
+             <span class="material-symbols-outlined">delete</span>
+             Eliminar
+           </button>
+           <button class="btn-accion btn-imprimir" (click)="exportarAExcel()">
+             <span class="material-symbols-outlined">download</span>
+             Exportar a Excel
+           </button>
+           <button class="btn-accion btn-anexo" (click)="abrirSelectorArchivo()">
+             <span class="material-symbols-outlined">attach_file</span>
+             Agregar Anexo
+           </button>
+         </div>
+
+      </div>
+
+      <!-- Tabla de Equipos -->
+      <div *ngIf="!cargando && compra" class="equipos-section">
+        <div class="equipos-header">
+          <h3>Equipos Asociados</h3>
+          <div class="equipos-stats">
+            <span class="equipos-count">{{ equipos.length }} equipos</span>
+          </div>
+        </div>
+
+        <!-- Indicador de carga para equipos -->
+        <div *ngIf="cargandoEquipos" class="loading-container">
+          <div class="spinner"></div>
+          <p>Cargando equipos...</p>
+        </div>
+
+        <!-- Tabla de equipos -->
+        <div *ngIf="!cargandoEquipos" class="equipos-table-container">
+          <table class="equipos-table">
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>id_equipamiento</th>
+                <th>nro_item</th>
+                <th>nombre</th>
+                <th>cantidad</th>
+                <th>servicio</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let equipo of equipos">
+              
+                <td>{{ equipo.id || 'N/A' }}</td>
+                <td>{{ equipo.id_equipamiento || 'N/A' }}</td>
+                <td>{{ equipo.nro_item || 'N/A' }}</td>
+                <td>{{ equipo.nombre || 'N/A' }}</td>
+                <td>{{ equipo.cantidad || 'N/A' }}</td>
+                <td>{{ equipo.servicio || 'N/A' }}</td>
+                <td>
+                  <div class="acciones-equipo">
+                    <button class="btn-editar-equipo" (click)="editarEquipo(equipo)" title="Editar equipo">
+                      <span class="material-symbols-outlined">edit</span>
+                    </button>
+                    <button class="btn-eliminar-equipo" (click)="eliminarEquipo(equipo)" title="Eliminar equipo">
+                      <span class="material-symbols-outlined">delete</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Mensaje cuando no hay equipos -->
+          <div *ngIf="equipos.length === 0" class="no-equipos">
+            <div class="no-equipos-content">
+              <span class="material-symbols-outlined">inventory_2</span>
+              <p>No hay equipos asociados a esta compra</p>
+              <button class="btn-agregar-equipo" (click)="abrirFormularioAgregarEquipo()">
+                <span class="material-symbols-outlined">add</span>
+                Agregar Equipo
+              </button>
+            </div>
+          </div>
+          
+          <!-- Botón para agregar equipo cuando ya hay equipos -->
+          <div *ngIf="equipos.length > 0" class="equipos-actions">
+            <button class="btn-agregar-equipo" (click)="abrirFormularioAgregarEquipo()">
+              <span class="material-symbols-outlined">add</span>
+              Agregar Equipo
+            </button>
+          </div>
+                 </div>
+       </div>
+
+       <!-- Sección de Anexos -->
+       <div *ngIf="!cargando && compra" class="anexos-section">
+         <div class="anexos-header">
+           <h3>Anexos y Documentos</h3>
+           <div class="anexos-stats">
+             <span class="anexos-count">{{ anexos.length }} anexos</span>
+           </div>
+         </div>
+
+         <!-- Indicador de carga para anexos -->
+         <div *ngIf="cargandoAnexos" class="loading-container">
+           <div class="spinner"></div>
+           <p>Cargando anexos...</p>
+         </div>
+
+         <!-- Contenido de anexos -->
+         <div *ngIf="!cargandoAnexos" class="anexos-content">
+           <!-- Input de archivo oculto -->
+           <input type="file" id="archivo-input" (change)="seleccionarArchivo($event)" style="display: none;" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.jpg,.jpeg,.png">
+
+           <!-- Área de subida de archivo -->
+           <div *ngIf="archivoSeleccionado" class="archivo-seleccionado">
+             <div class="archivo-info">
+               <span class="material-symbols-outlined">description</span>
+               <div class="archivo-details">
+                 <p class="archivo-nombre">{{ archivoSeleccionado.name }}</p>
+                 <p class="archivo-tamaño">{{ (archivoSeleccionado.size / 1024 / 1024).toFixed(2) }} MB</p>
+               </div>
+             </div>
+             <div class="archivo-actions">
+               <button class="btn-subir" (click)="subirAnexo()" [disabled]="subiendoAnexo">
+                 <span *ngIf="subiendoAnexo" class="spinner-small"></span>
+                 <span class="material-symbols-outlined" *ngIf="!subiendoAnexo">upload</span>
+                 {{ subiendoAnexo ? 'Subiendo...' : 'Subir' }}
+               </button>
+               <button class="btn-cancelar-archivo" (click)="cancelarSeleccionArchivo()">
+                 <span class="material-symbols-outlined">close</span>
+                 Cancelar
+               </button>
+             </div>
+           </div>
+
+           <!-- Lista de anexos -->
+           <div *ngIf="anexos.length > 0" class="anexos-list">
+             <div *ngFor="let anexo of anexos" class="anexo-item">
+               <div class="anexo-info">
+                 <span class="material-symbols-outlined">description</span>
+                 <div class="anexo-details">
+                   <p class="anexo-nombre">{{ anexo.nombre_original || anexo.filename || 'Documento' }}</p>
+                   <p class="anexo-fecha">{{ anexo.fecha_subida || anexo.created_at || 'Fecha no disponible' }}</p>
+                 </div>
+               </div>
+                  <div class="anexo-actions">
+                  <!-- <button class="btn-preview-anexo" (click)="abrirPreview(anexo)" title="Abrir carpeta del archivo">
+                    <span class="material-symbols-outlined">folder_open</span>
+                  </button> -->
+                  <!-- <button class="btn-descargar-anexo" (click)="descargarAnexo(anexo)" title="Descargar anexo">
+                    <span class="material-symbols-outlined">download</span>
+                  </button> -->
+                  <button class="btn-eliminar-anexo" (click)="eliminarAnexo(anexo)" title="Eliminar anexo">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+   
+                </div>
+             </div>
+           </div>
+
+           <!-- Mensaje cuando no hay anexos -->
+           <div *ngIf="anexos.length === 0" class="no-anexos">
+             <div class="no-anexos-content">
+               <span class="material-symbols-outlined">folder_open</span>
+               <p>No hay anexos asociados a esta compra</p>
+               <p class="anexos-hint">Haga clic en "Agregar Anexo" para subir documentos</p>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       <!-- Mensaje si no hay datos -->
+      <div *ngIf="!cargando && !compra" class="no-data">
+        <p>No se encontraron detalles de la compra.</p>
+        <button class="btn-volver" (click)="volverACompras()">
+          Volver a Compras
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal de Edición -->
+  <div *ngIf="mostrarFormularioEdicion" class="modal-overlay" (click)="cerrarFormularioEdicion()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Editar Compra</h3>
+        <button class="btn-cerrar" (click)="cerrarFormularioEdicion()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form [formGroup]="formularioEdicion" (ngSubmit)="guardarEdicion()" class="modal-body">
+        <div class="form-grid">
+          <!-- Columna izquierda -->
+          <div class="form-column">
+            <div class="form-group">
+              <label for="memo">Memo *</label>
+              <input type="text" id="memo" formControlName="memo" 
+                     [class.invalid]="formularioEdicion.get('memo')?.invalid && formularioEdicion.get('memo')?.touched">
+              <div *ngIf="formularioEdicion.get('memo')?.invalid && formularioEdicion.get('memo')?.touched" class="error-message">
+                Memo es requerido
+              </div>
+            </div>
+
+                         <div class="form-group">
+               <label for="numero">Número</label>
+               <input type="text" id="numero" formControlName="numero">
+             </div>
+
+             <div class="form-group">
+               <label for="nombre">Nombre *</label>
+               <input type="text" id="nombre" formControlName="nombre"
+                      [class.invalid]="formularioEdicion.get('nombre')?.invalid && formularioEdicion.get('nombre')?.touched">
+               <div *ngIf="formularioEdicion.get('nombre')?.invalid && formularioEdicion.get('nombre')?.touched" class="error-message">
+                 Nombre es requerido
+               </div>
+             </div>
+
+             <div class="form-group">
+               <label for="tipo">Tipo *</label>
+               <select id="tipo" formControlName="tipo"
+                       [class.invalid]="formularioEdicion.get('tipo')?.invalid && formularioEdicion.get('tipo')?.touched">
+                 <option value="">Seleccione un tipo</option>
+                 <option value="LAA">LAA</option>
+                 <option value="LA">LA</option>
+                 <option value="CD">CD</option>
+                 <option value="CDE">CDE</option>
+                 <option value="CDA">CDA</option>
+                 <option value="CDNC">CDNC</option>
+               </select>
+               <div *ngIf="formularioEdicion.get('tipo')?.invalid && formularioEdicion.get('tipo')?.touched" class="error-message">
+                 Tipo es requerido
+               </div>
+             </div>
+
+            <div class="form-group">
+              <label for="monto">Monto *</label>
+              <input type="number" id="monto" formControlName="monto" min="0" step="0.01"
+                     [class.invalid]="formularioEdicion.get('monto')?.invalid && formularioEdicion.get('monto')?.touched">
+              <div *ngIf="formularioEdicion.get('monto')?.invalid && formularioEdicion.get('monto')?.touched" class="error-message">
+                Monto es requerido y debe ser mayor o igual a 0
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="rubro">Rubro *</label>
+              <input type="text" id="rubro" formControlName="rubro"
+                     [class.invalid]="formularioEdicion.get('rubro')?.invalid && formularioEdicion.get('rubro')?.touched">
+              <div *ngIf="formularioEdicion.get('rubro')?.invalid && formularioEdicion.get('rubro')?.touched" class="error-message">
+                Rubro es requerido
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna derecha -->
+          <div class="form-column">
+            <div class="form-group">
+              <label for="resolucion">Resolución</label>
+              <input type="text" id="resolucion" formControlName="resolucion">
+            </div>
+
+            <div class="form-group">
+              <label for="monto_resol_final">Monto Resolución Final</label>
+              <input type="number" id="monto_resol_final" formControlName="monto_resol_final" min="0" step="0.01">
+            </div>
+
+            <div class="form-group">
+              <label for="trimestre">Trimestre *</label>
+              <select id="trimestre" formControlName="trimestre"
+                      [class.invalid]="formularioEdicion.get('trimestre')?.invalid && formularioEdicion.get('trimestre')?.touched">
+                <option value="">Seleccione un trimestre</option>
+                <option value="primer">Primer Trimestre</option>
+                <option value="segundo">Segundo Trimestre</option>
+                <option value="tercer">Tercer Trimestre</option>
+                <option value="cuarto">Cuarto Trimestre</option>
+              </select>
+              <div *ngIf="formularioEdicion.get('trimestre')?.invalid && formularioEdicion.get('trimestre')?.touched" class="error-message">
+                Trimestre es requerido
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="estado">Estado *</label>
+              <input type="text" id="estado" formControlName="estado"
+                     [class.invalid]="formularioEdicion.get('estado')?.invalid && formularioEdicion.get('estado')?.touched">
+              <div *ngIf="formularioEdicion.get('estado')?.invalid && formularioEdicion.get('estado')?.touched" class="error-message">
+                Estado es requerido
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="obs">Observaciones</label>
+              <textarea id="obs" formControlName="obs" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancelar" (click)="cancelarEdicion()" [disabled]="guardando">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-guardar" [disabled]="guardando || formularioEdicion.invalid">
+            <span *ngIf="guardando" class="spinner-small"></span>
+            {{ guardando ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Agregar Equipo -->
+  <div *ngIf="mostrarFormularioAgregarEquipo" class="modal-overlay" (click)="cerrarFormularioAgregarEquipo()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Agregar Equipo</h3>
+        <button class="btn-cerrar" (click)="cerrarFormularioAgregarEquipo()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form [formGroup]="formularioAgregarEquipo" (ngSubmit)="guardarEquipo()" class="modal-body">
+        <div class="form-grid">
+          <!-- Columna izquierda -->
+          <div class="form-column">
+            <div class="form-group">
+              <label for="id_equipamiento">ID Equipamiento *</label>
+              <input type="text" id="id_equipamiento" formControlName="id_equipamiento" readonly
+                     [class.invalid]="formularioAgregarEquipo.get('id_equipamiento')?.invalid && formularioAgregarEquipo.get('id_equipamiento')?.touched">
+              <div *ngIf="formularioAgregarEquipo.get('id_equipamiento')?.invalid && formularioAgregarEquipo.get('id_equipamiento')?.touched" class="error-message">
+                ID de equipamiento es requerido
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="nro_item">Número de Item *</label>
+              <input type="text" id="nro_item" formControlName="nro_item" 
+                     [class.invalid]="formularioAgregarEquipo.get('nro_item')?.invalid && formularioAgregarEquipo.get('nro_item')?.touched">
+              <div *ngIf="formularioAgregarEquipo.get('nro_item')?.invalid && formularioAgregarEquipo.get('nro_item')?.touched" class="error-message">
+                Número de item es requerido
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="nombre">Nombre *</label>
+              <input type="text" id="nombre" formControlName="nombre" 
+                     [class.invalid]="formularioAgregarEquipo.get('nombre')?.invalid && formularioAgregarEquipo.get('nombre')?.touched">
+              <div *ngIf="formularioAgregarEquipo.get('nombre')?.invalid && formularioAgregarEquipo.get('nombre')?.touched" class="error-message">
+                Nombre es requerido
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna derecha -->
+          <div class="form-column">
+            <div class="form-group">
+              <label for="cantidad">Cantidad *</label>
+              <input type="number" id="cantidad" formControlName="cantidad" min="1"
+                     [class.invalid]="formularioAgregarEquipo.get('cantidad')?.invalid && formularioAgregarEquipo.get('cantidad')?.touched">
+              <div *ngIf="formularioAgregarEquipo.get('cantidad')?.invalid && formularioAgregarEquipo.get('cantidad')?.touched" class="error-message">
+                <span *ngIf="formularioAgregarEquipo.get('cantidad')?.errors?.['required']">Cantidad es requerida</span>
+                <span *ngIf="formularioAgregarEquipo.get('cantidad')?.errors?.['min']">La cantidad debe ser mayor a 0</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="servicio">Servicio *</label>
+              <input type="text" id="servicio" formControlName="servicio" 
+                     [class.invalid]="formularioAgregarEquipo.get('servicio')?.invalid && formularioAgregarEquipo.get('servicio')?.touched">
+              <div *ngIf="formularioAgregarEquipo.get('servicio')?.invalid && formularioAgregarEquipo.get('servicio')?.touched" class="error-message">
+                Servicio es requerido
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancelar" (click)="cancelarAgregarEquipo()" [disabled]="guardandoEquipo">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-guardar" [disabled]="formularioAgregarEquipo.invalid || guardandoEquipo">
+            <span *ngIf="guardandoEquipo" class="spinner-small"></span>
+            <span class="material-symbols-outlined" *ngIf="!guardandoEquipo">save</span>
+            {{ guardandoEquipo ? 'Guardando...' : 'Guardar Equipo' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Editar Equipo -->
+  <div *ngIf="mostrarFormularioEditarEquipo" class="modal-overlay" (click)="cerrarFormularioEditarEquipo()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Editar Equipo</h3>
+        <button class="btn-cerrar" (click)="cerrarFormularioEditarEquipo()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form [formGroup]="formularioEditarEquipo" (ngSubmit)="guardarEdicionEquipo()" class="modal-body">
+        <div class="form-grid">
+          <!-- Columna izquierda -->
+          <div class="form-column">
+            <div class="form-group">
+              <label for="edit_id">ID *</label>
+              <input type="text" id="edit_id" formControlName="id" readonly
+                     [class.invalid]="formularioEditarEquipo.get('id')?.invalid && formularioEditarEquipo.get('id')?.touched">
+              <div *ngIf="formularioEditarEquipo.get('id')?.invalid && formularioEditarEquipo.get('id')?.touched" class="error-message">
+                ID es requerido
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="edit_id_equipamiento">ID Equipamiento *</label>
+              <input type="text" id="edit_id_equipamiento" formControlName="id_equipamiento" readonly
+                     [class.invalid]="formularioEditarEquipo.get('id_equipamiento')?.invalid && formularioEditarEquipo.get('id_equipamiento')?.touched">
+              <div *ngIf="formularioEditarEquipo.get('id_equipamiento')?.invalid && formularioEditarEquipo.get('id_equipamiento')?.touched" class="error-message">
+                ID de equipamiento es requerido
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="edit_nro_item">Número de Item *</label>
+              <input type="text" id="edit_nro_item" formControlName="nro_item" 
+                     [class.invalid]="formularioEditarEquipo.get('nro_item')?.invalid && formularioEditarEquipo.get('nro_item')?.touched">
+              <div *ngIf="formularioEditarEquipo.get('nro_item')?.invalid && formularioEditarEquipo.get('nro_item')?.touched" class="error-message">
+                Número de item es requerido
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="edit_nombre">Nombre *</label>
+              <input type="text" id="edit_nombre" formControlName="nombre" 
+                     [class.invalid]="formularioEditarEquipo.get('nombre')?.invalid && formularioEditarEquipo.get('nombre')?.touched">
+              <div *ngIf="formularioEditarEquipo.get('nombre')?.invalid && formularioEditarEquipo.get('nombre')?.touched" class="error-message">
+                Nombre es requerido
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna derecha -->
+          <div class="form-column">
+            <div class="form-group">
+              <label for="edit_cantidad">Cantidad *</label>
+              <input type="number" id="edit_cantidad" formControlName="cantidad" min="1"
+                     [class.invalid]="formularioEditarEquipo.get('cantidad')?.invalid && formularioEditarEquipo.get('cantidad')?.touched">
+              <div *ngIf="formularioEditarEquipo.get('cantidad')?.invalid && formularioEditarEquipo.get('cantidad')?.touched" class="error-message">
+                <span *ngIf="formularioEditarEquipo.get('cantidad')?.errors?.['required']">Cantidad es requerida</span>
+                <span *ngIf="formularioEditarEquipo.get('cantidad')?.errors?.['min']">La cantidad debe ser mayor a 0</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="edit_servicio">Servicio *</label>
+              <input type="text" id="edit_servicio" formControlName="servicio" 
+                     [class.invalid]="formularioEditarEquipo.get('servicio')?.invalid && formularioEditarEquipo.get('servicio')?.touched">
+              <div *ngIf="formularioEditarEquipo.get('servicio')?.invalid && formularioEditarEquipo.get('servicio')?.touched" class="error-message">
+                Servicio es requerido
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancelar" (click)="cancelarEdicionEquipo()" [disabled]="guardandoEdicionEquipo">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-guardar" [disabled]="formularioEditarEquipo.invalid || guardandoEdicionEquipo">
+            <span *ngIf="guardandoEdicionEquipo" class="spinner-small"></span>
+            <span class="material-symbols-outlined" *ngIf="!guardandoEdicionEquipo">save</span>
+            {{ guardandoEdicionEquipo ? 'Guardando...' : 'Guardar Cambios' }}
+          </button>
+        </div>
+             </form>
+     </div>
+   </div>
+
+
+ </div>

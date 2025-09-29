@@ -24,7 +24,8 @@ export class FacturacionFormComponent implements OnInit {
     empresa: '',
     monto: 0,
     estado: 'Pendiente',
-    observacion: ''
+    observacion: '',
+    prioridad: false // Asegúrate de inicializar todos los campos necesarios
   };
   modoEdicion: boolean = false;
   item: Facturacion | undefined;
@@ -81,7 +82,8 @@ export class FacturacionFormComponent implements OnInit {
       empresa: '',
       monto: 0,
       estado: 'Pendiente',
-      observacion: ''
+      observacion: '',
+      prioridad: false // Asegúrate de inicializar todos los campos necesarios
     };
   }
 

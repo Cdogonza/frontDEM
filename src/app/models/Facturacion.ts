@@ -5,4 +5,5 @@ export interface Facturacion {
     monto: number;
     estado: string;
     observacion: string;
+    prioridad: boolean;
   }

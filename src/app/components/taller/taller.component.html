@@ -5,7 +5,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-1">
+        <!-- <div class="col-md-1">
             <ul class="nav flex-column">
                 <li class="nav-item contenido-central">
                     <button class="btnNuevo" style="background-color: rgb(126, 126, 126); border: none; width: 100%; color: aliceblue; padding: 20px; font-size: 20px;"><span class="material-symbols-outlined">
@@ -23,10 +23,10 @@
                         </span>Ver Hoy</button>
                 </li>
             </ul>
-        </div>
+        </div> -->
         <div class="col-md-10">
             <div class="card">
-            
+
 
 
                 <div class="col-md-12 contenido-central">
@@ -36,43 +36,45 @@
                             <tr>
                                 <td style="color: white;">erdsfdsfdsferer</td>
                                 <td style="color: white;">ersdfdsfdsferer</td>
-                                <td><input type="search" class="form-control rounded" placeholder="Por Nombre..." 
+                                <td><input type="search" class="form-control rounded" placeholder="Por Nombre..."
                                         aria-label="Buscar equipos"></td>
                                 <td><input type="search" class="form-control rounded" placeholder="Por novedad..."
                                         aria-label="Buscar equipos"></td>
-<td style="color: white;">edsfdsfdsrerer</td>
-<td style="color: white;">edsfsdfdsfrerer</td>
+                                <td style="color: white;">edsfdsfdsrerer</td>
+                                <td style="color: white;">edsfsdfdsfrerer</td>
 
                             </tr>
                         </tbody>
                     </table>
-                    <table class="table" >
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th style="min-width: 100px; max-width: 200px;">DEM</th>
-                                <th > FECHA</th>
-                                <th > NOMBRE</th>
-                                <th >EQUIPO</th>
-                                <th >MOTIVO</th>
-                                <th >ESTADO</th>
-                                
+                                <th> FECHA</th>
+                                <th> NOMBRE</th>
+                                <th>EQUIPO</th>
+                                <th>MOTIVO</th>
+                                <th>ESTADO</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let equipos of tallerFiltrados">
                                 <td>{{ equipos.dem}}</td>
-                                <td  >{{ equipos.fecha | date }}</td>
+                                <td>{{ equipos.fecha | date }}</td>
                                 <td>{{ equipos.user}}</td>
                                 <td>{{ equipos.nombre_equipo }}</td>
                                 <td>{{ equipos.motivo}}</td>
                                 <td>{{ equipos.estado}}</td>
-                                <td><button style="background: none; border: none; color: red; "><span class="material-symbols-outlined">
-                                    edit
-                                    </span></button>
+                                <td><button style="background: none; border: none; color: red; "><span
+                                            class="material-symbols-outlined">
+                                            edit
+                                        </span></button>
                                 </td>
-                                <td><button style="background: none; border: none; color: rgb(139, 139, 0);" ><span class="material-symbols-outlined">
-                                    check
-                                    </span></button>
+                                <td><button style="background: none; border: none; color: rgb(139, 139, 0);"><span
+                                            class="material-symbols-outlined">
+                                            check
+                                        </span></button>
                                 </td>
                             </tr>
                         </tbody>

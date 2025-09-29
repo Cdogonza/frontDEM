@@ -7,39 +7,42 @@
   </div>
   <button class="btn-nueva" (click)="exportPDF()">Generar Reporte</button>
   <button class="btn-nueva" (click)="cancelarReporte()">Cancelar</button>
-<div id="content" class="table-container">
-
+<div id="content" class="table-container" *ngIf="mesSeleccionado">
 
     <h2 class="subtitulo">REPORTE DE FONDO ROTATORIO DEL MES DE {{mesSeleccionado}}</h2>
 
-    <!-- Subtítulo "FACTURAS PAGAS" -->
-    <h3 class="subtitulo">Entradas del mes</h3>
+    <!-- Tabla de Entradas del Mes -->
+    <h3 class="subtitulo">ENTRADAS DEL MES</h3>
 
     <table>
         <thead>
             <tr>
-                <th class="hidden">ID Facturación</th>
+                <th class="hidden">ID Entrada</th>
                 <th>Fecha</th>
                 <th>Monto</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let entradaa of entrada">
-                <td class="hidden">{{ entradaa.identrada }}</td>
-                <td>{{ formatDate(entradaa.fecha) }}</td>
-                <td>{{ entradaa.monto | currency }}</td>
-
-                
+            <tr *ngFor="let entrada of entradasDelMes">
+                <td class="hidden">{{ entrada.identrada }}</td>
+                <td>{{ formatDate(entrada.fecha) }}</td>
+                <td>{{ entrada.monto | currency }}</td>
+            </tr>
+            <tr *ngIf="entradasDelMes.length === 0">
+                <td colspan="3" style="text-align: center; color: #666;">No hay entradas registradas en este mes</td>
             </tr>
         </tbody>
         <tr>
-            <td colspan="1" style="text-align: left;justify-self: auto; font-weight: bold; background-color: rgb(208, 209, 209);"></td>
-            <td colspan="2" style="text-align: left;justify-self: auto; font-weight: bold; background-color: rgb(208, 209, 209);">TOTAL: {{totalEntrada| currency}}</td>
+            <td colspan="1" style="text-align: left; font-weight: bold; background-color: rgb(208, 209, 209);"></td>
+            <td colspan="2" style="text-align: left; font-weight: bold; background-color: rgb(208, 209, 209);">
+                TOTAL ENTRADAS: {{totalEntradasMes | currency}}
+            </td>
         </tr>
     </table>
-    <h3 class="subtitulo">Salidas del mes</h3>
 
-    <!-- Segunda tabla: Filas sin "pendiente" -->
+    <!-- Tabla de Facturas Pagas del Mes -->
+    <h3 class="subtitulo">FACTURAS PAGAS DEL MES</h3>
+
     <table>
         <thead>
             <tr>
@@ -49,27 +52,52 @@
                 <th>Monto</th>
                 <th>Estado</th>
                 <th>Observación</th>
-                
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let facturacion of pagadasFacturaciones">
+            <tr *ngFor="let facturacion of facturasPagasDelMes">
                 <td class="hidden">{{ facturacion.idfacturacion }}</td>
                 <td>{{ formatDate(facturacion.fecha) }}</td>
                 <td>{{ facturacion.empresa }}</td>
                 <td>{{ facturacion.monto | currency }}</td>
                 <td>{{ facturacion.estado }}</td>
                 <td>{{ facturacion.observacion }}</td>
-                
             </tr>
-            
+            <tr *ngIf="facturasPagasDelMes.length === 0">
+                <td colspan="6" style="text-align: center; color: #666;">No hay facturas pagas registradas en este mes</td>
+            </tr>
         </tbody>
         <tr>
-            <td colspan="2" style="text-align: left;justify-self: auto; font-weight: bold; background-color: rgb(208, 209, 209);"></td>
-            <td colspan="3" style="text-align: left;justify-self: auto; font-weight: bold; background-color: rgb(208, 209, 209);">TOTAL: {{totalPagado| currency}}
+            <td colspan="2" style="text-align: left; font-weight: bold; background-color: rgb(208, 209, 209);"></td>
+            <td colspan="4" style="text-align: left; font-weight: bold; background-color: rgb(208, 209, 209);">
+                TOTAL FACTURAS PAGAS: {{totalFacturasPagasMes | currency}}
+            </td>
         </tr>
     </table>
-    <h5>Total de entradas del mes {{totalEntrada| currency}}</h5>
-    <h5>Total de salidas del mes $ {{totalPagado| currency}}</h5>
-    <h5>Pasa para el mes siguiente $ {{enCaja| currency}}</h5>
+
+    <!-- Resumen del Mes -->
+    <div class="resumen-mes">
+        <h4>RESUMEN DEL MES DE {{mesSeleccionado}}</h4>
+        <div class="resumen-item">
+            <span class="resumen-label">Total de Entradas:</span>
+            <span class="resumen-valor">{{totalEntradasMes | currency}}</span>
+        </div>
+        <div class="resumen-item">
+            <span class="resumen-label">Total de Salidas (Facturas Pagas):</span>
+            <span class="resumen-valor">{{totalFacturasPagasMes | currency}}</span>
+        </div>
+        <div class="resumen-item total">
+            <span class="resumen-label">Saldo del Mes:</span>
+            <span class="resumen-valor"
+                  [class.positivo]="(+totalEntradasMes - +totalFacturasPagasMes) >= 0"
+                  [class.negativo]="(+totalEntradasMes - +totalFacturasPagasMes) < 0">
+                {{(+totalEntradasMes - +totalFacturasPagasMes) | currency}}
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Mensaje cuando no hay mes seleccionado -->
+<div *ngIf="!mesSeleccionado" class="mensaje-seleccion">
+    <p>Por favor, seleccione un mes para generar el reporte.</p>
 </div>

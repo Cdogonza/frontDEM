@@ -22,12 +22,22 @@
           <span class="material-symbols-outlined">disabled_by_default</span>
           <span class="btn-text">Cerrar Mes</span>
         </button>
+        <button (click)="exportToExcelPrevistos()" class="excel">
+          <span class="material-symbols-outlined">
+            description
+          </span> Exportar a Excel Previstos
+        </button>
+        <button (click)="exportToExcel()" class="excel">
+          <span class="material-symbols-outlined">
+            description
+          </span> Exportar a Excel Pagadas
+        </button>
       </div>
-      
+
       <!-- Resumen financiero -->
-      
+
     </div>
-    
+
     <!-- Contenido principal -->
     <div class="col-8">
       <div class="card">
@@ -65,8 +75,10 @@
                   <th>Empresa</th>
                   <th>Monto</th>
                   <th>Estado</th>
-                  <th colspan="4">Observación</th>
+                  <th>Prioritario</th>
+                  <th colspan="3">Observación</th>
                   <th colspan="2">Acciones</th>
+
                 </tr>
               </thead>
               <tbody style="font-size: 0.9rem;">
@@ -76,7 +88,10 @@
                   <td>{{ facturacion.empresa }}</td>
                   <td>{{ facturacion.monto | currency }}</td>
                   <td>{{ facturacion.estado }}</td>
-                  <td colspan="4">{{ facturacion.observacion }}</td>
+                  <td>
+                    <input type="checkbox" [(ngModel)]="facturacion.prioridad" (change)="updatePriority(facturacion)">
+                  </td>
+                  <td colspan="3">{{ facturacion.observacion }}</td>
                   <td style="justify-self: center;" colspan="2">
                     <button (click)="moveClick(facturacion)"><span class="material-symbols-outlined">
                         attach_money
@@ -90,6 +105,7 @@
                         delete
                       </span></button>
                   </td>
+
                 </tr>
               </tbody>
             </table>
@@ -156,11 +172,14 @@
               <tr>
                 <th class="text-nowrap pe-1">CAJA: <strong>{{ enCaja | currency }}</strong></th>
               </tr>
+              <tr>
+                <th class="text-nowrap pe-1">Con Prioritario: <strong>{{ enCajaPrioritario | currency }}</strong></th>
+              </tr>
             </tbody>
           </table>
-        </div>  
+        </div>
       </div>
     </div>
   </div>
-  
+
 </div>

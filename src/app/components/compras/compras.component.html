@@ -1,0 +1,378 @@
+<app-nav-bar></app-nav-bar>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+
+<div class="container-fluid text-center">
+  <div class="row align-items-start">
+    <!-- Columna lateral para los botones -->
+    <div class="col-2">
+      <div class="sidebar-buttons">
+                 <!-- Equipamiento -->
+         <div class="category-section">
+           <h6 class="category-title">Equipamiento Medico</h6>
+           <button class="sidebar-btn sub-btn" (click)="nuevoEquipamiento()"
+           >
+     <span class="btn-text">Nuevo</span>
+   </button>
+           <button class="sidebar-btn sub-btn" (click)="cargarEquipamiento()"
+           [class.active]="trimestreActual === ''">
+     <span class="btn-text">Todos</span>
+   </button>
+           <button class="sidebar-btn sub-btn" (click)="filtrarPorTrimestre('primer')" 
+                   [class.active]="trimestreActual === 'Primer'">
+             <span class="btn-text">Primer</span>
+           </button>
+           <button class="sidebar-btn sub-btn" (click)="filtrarPorTrimestre('segundo')"
+                   [class.active]="trimestreActual === 'Segundo'">
+             <span class="btn-text">Segundo</span>
+           </button>
+                       <button class="sidebar-btn sub-btn" (click)="filtrarPorTrimestre('tercer')"
+                    [class.active]="trimestreActual === 'Tercero'">
+              <span class="btn-text">Tercero</span>
+            </button>
+           <button class="sidebar-btn sub-btn" (click)="filtrarPorTrimestre('cuarto')"
+                   [class.active]="trimestreActual === 'Cuarto'">
+             <span class="btn-text">Cuarto</span>
+           </button>
+
+         </div>
+
+        <!-- Mantenimiento -->
+        <div class="category-section">
+          <h6 class="category-title">Mantenimiento y Arrend.</h6>
+          <button class="sidebar-btn sub-btn">
+            <span class="material-symbols-outlined">build</span>
+            <span class="btn-text">Primer</span>
+          </button>
+          <button class="sidebar-btn sub-btn">
+            <span class="material-symbols-outlined">build</span>
+            <span class="btn-text">Segundo</span>
+          </button>
+          <button class="sidebar-btn sub-btn">
+            <span class="material-symbols-outlined">build</span>
+            <span class="btn-text">Tercero</span>
+          </button>
+          <button class="sidebar-btn sub-btn">
+            <span class="material-symbols-outlined">build</span>
+            <span class="btn-text">Cuarto</span>
+          </button>
+        </div>
+
+        <!-- Motores -->
+        <div class="category-section">
+          <h6 class="category-title">Motores y Repuestos</h6>
+          <button class="sidebar-btn sub-btn">
+
+            <span class="btn-text">Primer</span>
+          </button>
+          <button class="sidebar-btn sub-btn">
+            <span class="btn-text">Segundo</span>
+          </button>
+          <button class="sidebar-btn sub-btn">
+            <span class="btn-text">Tercero</span>
+          </button>
+          <button class="sidebar-btn sub-btn">
+
+            <span class="btn-text">Cuarto</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="col-8">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Compras</h4>
+        </div>
+
+                 <div class="table-container">
+                       <div class="table-header">
+              <h5 *ngIf="categoriaActual">{{ categoriaActual }}</h5>
+              <p *ngIf="trimestreActual">Filtrado por: {{ trimestreActual }} Trimestre</p>
+              <p *ngIf="!trimestreActual">Mostrando todas las compras</p>
+            </div>
+            
+                         <!-- Barras de búsqueda -->
+             <div class="search-container">
+               <div class="search-row">
+                 <input 
+                   type="text" 
+                   id="searchNumero" 
+                   class="search-input"
+                   placeholder="Buscar por número..."
+                   [(ngModel)]="searchNumero"
+                   (input)="buscarPorNumero()">
+                 
+                 <input 
+                   type="text" 
+                   id="searchNombre" 
+                   class="search-input"
+                   placeholder="Buscar por nombre..."
+                   [(ngModel)]="searchNombre"
+                   (input)="buscarPorNombre()">
+                 
+                                   <button type="button" class="search-clear-btn" (click)="limpiarBusquedas()">
+                    <span class="material-symbols-outlined">clear</span>
+                  </button>
+                  
+                  <button type="button" class="search-export-btn" (click)="exportarTablaAExcel()">
+                    <span class="material-symbols-outlined">download</span>
+                  </button>
+               </div>
+             </div>
+            
+            <!-- Indicador de carga -->
+            <div *ngIf="cargando" class="loading-container">
+              <div class="spinner"></div>
+              <p>Cargando datos...</p>
+            </div>
+            
+                        <!-- Tabla de datos -->
+             <table *ngIf="!cargando">
+              <thead>
+                <tr>
+                  <th>Memo</th>
+                  <th>Nombre</th>
+                  <th>Numero_Proc.</th>
+                  <th>monto</th>
+
+
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+                          <tbody style="font-size: 0.9rem;">
+                 <tr *ngFor="let compra of comprasPagina">
+                   <td>{{ compra.memo || compra.numero }}</td>
+                   <td>{{ compra.nombre || 'N/A' }}</td>
+                   <td>{{ compra.numero }}</td>
+                   <td>{{ compra.monto }}</td>
+
+            
+                   <td>
+                     <button class="viewButton" (click)="verDetalles(compra)">
+                       <span class="material-symbols-outlined">visibility</span>
+                       Ver Detalles
+                     </button>
+                   </td>
+                 </tr>
+               </tbody>
+            </table>
+ 
+             <!-- Controles de paginación -->
+             <div class="pagination" *ngIf="!cargando && compras.length > pageSize">
+               <button class="page-btn" (click)="prevPage()" [disabled]="currentPage === 1"><span class="material-symbols-outlined">
+                arrow_back_ios
+                </span></button>
+               <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
+               <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages"><span class="material-symbols-outlined">
+                arrow_forward_ios
+                </span></button>
+             </div>
+            
+            <!-- Mensaje cuando no hay datos -->
+           <div *ngIf="!cargando && compras.length === 0" class="no-data">
+             <p>No se encontraron datos de compras.</p>
+           </div>
+         </div>
+      </div>
+    </div>
+
+    <!-- Columna lateral derecha -->
+    <div class="col-2">
+      <div class="card2 p-2 mt-4">
+        <div class="w-100">
+          <h5>Resumen</h5>
+          <p>Total de compras: {{ compras.length }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para agregar equipamiento -->
+<div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h4>Nuevo Equipamiento</h4>
+      <button type="button" class="close-btn" (click)="closeModal()">
+        <span>&times;</span>
+      </button>
+    </div>
+    
+         <form [formGroup]="equipamientoForm" (ngSubmit)="submitEquipamiento()" class="modal-body">
+       <!-- Primera fila -->
+       <div class="form-row">
+         <div class="form-group">
+           <label for="memo">Memo *</label>
+           <input 
+             id="memo" 
+             formControlName="memo" 
+             class="form-control"
+       
+             placeholder="Ingrese el memo"
+             >
+           <div *ngIf="equipamientoForm.get('memo')?.invalid && equipamientoForm.get('memo')?.touched" class="error-message">
+             El memo es requerido
+           </div>
+         </div>
+         
+         <div class="form-group">
+           <label for="tipo">Tipo *</label>
+           <select id="tipo" formControlName="tipo" class="form-control">
+             <option value="">Seleccione un tipo</option>
+             <option value="LAA">LAA</option>
+             <option value="LA">LA</option>
+             <option value="CD">CD</option>
+             <option value="CDE">CDE</option>
+             <option value="CDA">CDA</option>
+             <option value="CDNC">CDNC</option>
+           </select>
+           <div *ngIf="equipamientoForm.get('tipo')?.invalid && equipamientoForm.get('tipo')?.touched" class="error-message">
+             El tipo es requerido
+           </div>
+         </div>
+       </div>
+
+               <!-- Segunda fila -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="numero">Número</label>
+            <input 
+              type="text" 
+              id="numero" 
+              formControlName="numero" 
+              class="form-control"
+              placeholder="Ingrese el número (opcional)">
+          </div>
+          
+          <div class="form-group">
+            <label for="nombre">Nombre *</label>
+            <input 
+              type="text" 
+              id="nombre" 
+              formControlName="nombre" 
+              class="form-control"
+              placeholder="Ingrese el nombre">
+            <div *ngIf="equipamientoForm.get('nombre')?.invalid && equipamientoForm.get('nombre')?.touched" class="error-message">
+              El nombre es requerido
+            </div>
+          </div>
+        </div>
+
+
+       <!-- Tercera fila -->
+       <div class="form-row">
+         <div class="form-group">
+           <label for="monto">Monto *</label>
+           <input 
+             type="number" 
+             id="monto" 
+             formControlName="monto" 
+             class="form-control"
+             placeholder="0.00"
+             min="0"
+             step="0.01">
+           <div *ngIf="equipamientoForm.get('monto')?.invalid && equipamientoForm.get('monto')?.touched" class="error-message">
+             El monto es requerido y debe ser mayor a 0
+           </div>
+         </div>
+         
+         <div class="form-group">
+           <label for="rubro">Rubro *</label>
+           <input 
+             type="text" 
+             id="rubro" 
+             formControlName="rubro" 
+             class="form-control"
+             placeholder="Ingrese el rubro"
+             min="1">
+           <div *ngIf="equipamientoForm.get('rubro')?.invalid && equipamientoForm.get('rubro')?.touched" class="error-message">
+             El rubro es requerido y debe ser mayor a 0
+           </div>
+         </div>
+       </div>
+
+       <!-- Cuarta fila -->
+       <div class="form-row">
+         <div class="form-group">
+           <label for="resolucion">Resolución *</label>
+           <input 
+             type="text" 
+             id="resolucion" 
+             formControlName="resolucion" 
+             class="form-control"
+             placeholder="Ingrese la resolución">
+           <div *ngIf="equipamientoForm.get('resolucion')?.invalid && equipamientoForm.get('resolucion')?.touched" class="error-message">
+             La resolución es requerida
+           </div>
+         </div>
+         
+         <div class="form-group">
+           <label for="monto_resol_final">Monto Resolución Final *</label>
+           <input 
+             type="number" 
+             id="monto_resol_final" 
+             formControlName="monto_resol_final" 
+             class="form-control"
+             placeholder="0.00"
+             min="1"
+             step="0.01">
+           <div *ngIf="equipamientoForm.get('monto_resol_final')?.invalid && equipamientoForm.get('monto_resol_final')?.touched" class="error-message">
+             El monto de resolución final es requerido y debe ser mayor a 0
+           </div>
+         </div>
+       </div>
+
+       <!-- Quinta fila -->
+       <div class="form-row">
+         <div class="form-group">
+           <label for="trimestre">Trimestre *</label>
+           <select id="trimestre" formControlName="trimestre" class="form-control">
+             <option value="">Seleccione un trimestre</option>
+             <option value="primer">Primer Trimestre</option>
+             <option value="segundo">Segundo Trimestre</option>
+             <option value="tercer">Tercer Trimestre</option>
+             <option value="cuarto">Cuarto Trimestre</option>
+           </select>
+           <div *ngIf="equipamientoForm.get('trimestre')?.invalid && equipamientoForm.get('trimestre')?.touched" class="error-message">
+             El trimestre es requerido
+           </div>
+         </div>
+         
+         <div class="form-group">
+           <label for="estado">Estado *</label>
+           <input 
+             type="text" 
+             id="estado" 
+             formControlName="estado" 
+             class="form-control"
+             placeholder="Ingrese el estado">
+           <div *ngIf="equipamientoForm.get('estado')?.invalid && equipamientoForm.get('estado')?.touched" class="error-message">
+             El estado es requerido
+           </div>
+         </div>
+       </div>
+
+       <!-- Observaciones -->
+       <div class="form-group">
+         <label for="obs">Observaciones</label>
+         <textarea 
+           id="obs" 
+           formControlName="obs" 
+           class="form-control"
+           rows="2"
+           placeholder="Ingrese observaciones adicionales"></textarea>
+       </div>
+
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" (click)="closeModal()">
+           Cancelar
+         </button>
+         <button type="submit" class="btn btn-primary" [disabled]="equipamientoForm.invalid">
+           Agregar
+         </button>
+       </div>
+     </form>
+   </div>
+ </div>

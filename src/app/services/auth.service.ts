@@ -61,6 +61,11 @@ export class AuthService implements OnInit {
     resetPassword(email: string): Observable<any> {
         return this.http.post(`${this.apiUrl}/auth/reset-password`, { email });
     }
+    resetPasswordDefault(email: string): Observable<any> {
+      console.log('🔄 Restableciendo contraseña por defecto...'+email);
+      // Using the existing reset-password endpoint as a temporary solution
+      return this.http.post(`${this.apiUrl}/auth/reset-password/${email}`, {  });
+  }
     newPassword(token: string, password: string): Observable<any> {
         return this.http.post(`${this.apiUrl}/auth/new-password`, { token, password });
     }

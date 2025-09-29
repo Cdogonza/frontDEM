@@ -47,7 +47,7 @@ h2 {
         background-color: #f3f3f3;
         
 }
-@import '~material-design-icons/iconfont/material-icons.css';
+
 
 input[type="search"].rounded {
     border-radius: 20px; /* Ajusta el valor para redondear más o menos */
