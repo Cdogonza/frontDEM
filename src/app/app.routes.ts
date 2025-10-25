@@ -12,6 +12,7 @@ import { FacturacionFormComponent } from './components/facturacion-form/facturac
 import { DocumentosComponent } from './components/documentos/documentos.component';
 import { ComprasComponent } from './components/compras/compras.component';
 import { DetallesCompraComponent } from './components/detalles-compra/detalles-compra.component';
+import { InformesTecnicosComponent } from './components/informes-tecnicos/informes-tecnicos.component';
 import { adminguardGuard } from './adminguard.guard';
 export const routes: Routes = [
     {path: 'novedades', component: NovedadesComponent, canActivate: [AuthGuard]},
@@ -25,6 +26,7 @@ export const routes: Routes = [
     {path: 'reporte', component: ReporteComponent, canActivate: [AuthGuard]},
     {path: 'facturacion', component: FacturacionComponent, canActivate: [AuthGuard]},
     {path: 'compras', component: ComprasComponent, canActivate: [AuthGuard]},
+    {path: 'informes-tecnicos', component: InformesTecnicosComponent, canActivate: [AuthGuard]},
     {
       path: 'detalles-compra/:id',
       loadComponent: () =>
