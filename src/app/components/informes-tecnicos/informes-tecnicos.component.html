@@ -1,0 +1,182 @@
+<app-nav-bar></app-nav-bar>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+
+<div class="container-fluid text-center">
+  <div class="row align-items-start">
+    <!-- Columna lateral para los botones -->
+    <div class="col-2">
+      <div class="sidebar-buttons">
+        <button class="sidebar-btn" (click)="mostrarFormulario()">
+          <span class="material-symbols-outlined">add</span>
+          <span class="btn-text">Nuevo Informe</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="col-8">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Informes Técnicos</h4>
+        </div>
+
+        <div id="content" class="table-container">
+          <table class="table table-striped table-hover">
+            <thead class="table">
+              <tr>
+                <th>ID</th>
+                <th>Fecha Recibido</th>
+                <th>Tipo Compra</th>
+                <th>Número</th>
+                <th>TO-DO</th>
+                <th>Detalles</th>
+                <th>Estado</th>
+                <th>Técnico</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let informe of informesTecnicos">
+                <td>{{ informe.idinformes_tecnicos }}</td>
+                <td>{{ formatDate(informe.informes_tecnicos_fecha_recibido) }}</td>
+                <td>{{ informe.informes_tecnicos_tipo_compra }}</td>
+                <td>{{ informe.informes_tecnicos_nro }}</td>
+                <td>{{ informe.informes_tecnicos_todo }}</td>
+                <td>{{ informe.informes_tecnicos_detalles }}</td>
+                <td [ngClass]="{
+                  'estado-completado': informe.informes_tecnicos_estado === 'completado',
+                  'estado-en-proceso': informe.informes_tecnicos_estado === 'en proceso',
+                  'estado-sin-asignar': informe.informes_tecnicos_estado === 'sin asignar'
+                }">{{ informe.informes_tecnicos_estado }}</td>
+                <td>{{ informe.informes_tecnicos_tecnico || '-' }}</td>
+                <td>
+                  <button class="btn btn-primary btn-sm" (click)="mostrarFormularioEdicion(informe)" style="margin-right: 5px;">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button class="btn btn-danger btn-sm" (click)="eliminarInforme(informe)">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Formulario flotante -->
+<div *ngIf="mostrarForm" class="modal-overlay" (click)="ocultarFormulario()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ esEdicion ? 'Editar Informe Técnico' : 'Nuevo Informe Técnico' }}</h5>
+      <button type="button" class="btn-close" (click)="ocultarFormulario()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <form (ngSubmit)="guardarInforme()">
+        <div class="row">
+          <div class="col-md-6 mb-3" *ngIf="!esEdicion">
+            <label for="fechaRecibido" class="form-label">Fecha Recibido *</label>
+            <input 
+              type="date" 
+              class="form-control" 
+              id="fechaRecibido" 
+              [(ngModel)]="nuevoInforme.informes_tecnicos_fecha_recibido" 
+              name="fechaRecibido"
+              required>
+          </div>
+          
+          <div class="col-md-6 mb-3" [class.col-md-12]="esEdicion">
+            <label for="tipoCompra" class="form-label">Tipo de Compra *</label>
+            <select 
+              class="form-control" 
+              id="tipoCompra" 
+              [(ngModel)]="nuevoInforme.informes_tecnicos_tipo_compra" 
+              name="tipoCompra"
+              required>
+              <option value="">Seleccionar tipo</option>
+              <option *ngFor="let tipo of opcionesTipoCompra" [value]="tipo">{{ tipo }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="numero" class="form-label">Número *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="numero" 
+              [(ngModel)]="nuevoInforme.informes_tecnicos_nro" 
+              name="numero"
+              required>
+          </div>
+          
+          <div class="col-md-6 mb-3">
+            <label for="estado" class="form-label">Estado *</label>
+            <select 
+              class="form-control" 
+              id="estado" 
+              [(ngModel)]="nuevoInforme.informes_tecnicos_estado" 
+              name="estado"
+              required>
+              <option value="">Seleccionar estado</option>
+              <option *ngFor="let estado of opcionesEstado" [value]="estado">{{ estado }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="tecnico" class="form-label">Técnico</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="tecnico" 
+              [(ngModel)]="nuevoInforme.informes_tecnicos_tecnico" 
+              name="tecnico">
+          </div>
+          
+          <div class="col-md-6 mb-3">
+            <label for="todo" class="form-label">Todo</label>
+            <select 
+              class="form-control" 
+              id="todo" 
+              [(ngModel)]="nuevoInforme.informes_tecnicos_todo" 
+              name="todo">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let todo of opcionesTodo" [value]="todo">{{ todo }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 mb-3">
+            <label for="detalles" class="form-label">Detalles</label>
+            <textarea 
+              class="form-control" 
+              id="detalles" 
+              rows="3" 
+              [(ngModel)]="nuevoInforme.informes_tecnicos_detalles" 
+              name="detalles">
+            </textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="ocultarFormulario()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary">
+            {{ esEdicion ? 'Actualizar' : 'Guardar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
