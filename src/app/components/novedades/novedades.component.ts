@@ -208,7 +208,7 @@ nuevaNovedad() {
   filtrarDocumento(event: Event) {
     const textoBusqueda = (event.target as HTMLInputElement).value;
     this.documentosFiltrados = this.documentos.filter(item =>
-      item.documento.toLowerCase().includes(textoBusqueda.toLowerCase())
+      item.matricula.toLowerCase().includes(textoBusqueda.toLowerCase())
     );
     this.currentPageDocumentos = 1;
     this.updateDocumentosPagination();
