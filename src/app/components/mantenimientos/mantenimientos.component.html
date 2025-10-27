@@ -39,6 +39,7 @@
         <table class="table table-hover">
           <thead class="table-dark">
             <tr>
+              <th>BIBLORATO</th>
               <th>MEMO</th>
               <th>Tipo/Nro Proc.</th>
               <th>Objeto</th>
@@ -51,15 +52,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let mantenimiento of mantenimientos">
-              <td>{{ mantenimiento.MEMO || '-' }}</td>
-              <td>{{ mantenimiento.TIPO_NRO_PROC || '-' }}</td>
-              <td>{{ mantenimiento.OBJETO || '-' }}</td>
-              <td>{{ mantenimiento.EMPRESA || '-' }}</td>
-              <td>{{ formatCurrency(mantenimiento.MONTO_INICIADO) }}</td>
-              <td>{{ formatCurrency(mantenimiento.MONTO_FINAL) }}</td>
-              <td>{{ formatDate(mantenimiento.INICIO) }}</td>
-              <td>{{ formatDate(mantenimiento.FIN) }}</td>
+            <ng-container *ngFor="let grupo of getMantenimientosAgrupados()">
+              <!-- Fila de encabezado del grupo -->
+              <tr class="table-group-header" *ngIf="grupo.biblorato">
+                <td colspan="10" class="fw-bold text-dark">
+                  <span class="material-symbols-outlined me-2">folder</span>
+                  BIBLORATO: {{ grupo.biblorato }}
+                </td>
+              </tr>
+              
+              <!-- Filas de mantenimientos del grupo -->
+              <tr *ngFor="let mantenimiento of grupo.mantenimientos" 
+                  [class.table-group-item]="grupo.biblorato">
+                <td>
+                  <span class="badge bg-primary" *ngIf="mantenimiento.BIBLORATO">{{ mantenimiento.BIBLORATO }}</span>
+                  <span class="text-muted" *ngIf="!mantenimiento.BIBLORATO">-</span>
+                </td>
+                <td>{{ mantenimiento.MEMO || '-' }}</td>
+                <td>{{ mantenimiento.TIPO_NRO_PROC || '-' }}</td>
+                <td>{{ mantenimiento.OBJETO || '-' }}</td>
+                <td>{{ mantenimiento.EMPRESA || '-' }}</td>
+                <td>{{ formatCurrency(mantenimiento.MONTO_INICIADO) }}</td>
+                <td>{{ formatCurrency(mantenimiento.MONTO_FINAL) }}</td>
+                <td>{{ formatDate(mantenimiento.INICIO) }}</td>
+                <td [class]="getFechaFinClass(mantenimiento)">{{ getFechaFinText(mantenimiento) }}</td>
               <td>
                 <div class="btn-group" role="group">
                   <button 
@@ -99,6 +115,7 @@
                 </div>
               </td>
             </tr>
+            </ng-container>
           </tbody>
         </table>
 
@@ -161,6 +178,17 @@
             <option value="UCA">UCA</option>
             <option value="UCAMAE">UCAMAE</option>
           </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="BIBLORATO" class="form-label">BIBLORATO</label>
+          <input 
+            type="number" 
+            class="form-control" 
+            id="BIBLORATO" 
+            formControlName="BIBLORATO"
+            placeholder="Número de BIBLORATO"
+            [class.is-invalid]="isFieldInvalid('BIBLORATO')">
         </div>
 
         <div class="col-12 mb-3">

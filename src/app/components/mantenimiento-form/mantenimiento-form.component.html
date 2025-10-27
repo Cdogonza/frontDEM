@@ -68,6 +68,17 @@
             </select>
           </div>
 
+          <div class="col-md-6 mb-3">
+            <label for="BIBLORATO" class="form-label">BIBLORATO</label>
+            <input 
+              type="number" 
+              class="form-control" 
+              id="BIBLORATO" 
+              formControlName="BIBLORATO"
+              placeholder="Número de BIBLORATO"
+              [class.is-invalid]="isFieldInvalid('BIBLORATO')">
+          </div>
+
           <div class="col-12 mb-3">
             <label for="OBJETO" class="form-label">Objeto</label>
             <textarea 

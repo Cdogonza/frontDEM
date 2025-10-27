@@ -42,7 +42,18 @@ export class MantenimientosComponent implements OnInit {
     
     this.mantenimientosService.getAllMantenimientos().subscribe({
       next: (data) => {
-        this.mantenimientos = data;
+        // Ordenar por BIBLORATO (ascendente) y luego por id_mantenimiento
+        this.mantenimientos = data.sort((a, b) => {
+          const bibloratoA = a.BIBLORATO || 0;
+          const bibloratoB = b.BIBLORATO || 0;
+          
+          if (bibloratoA !== bibloratoB) {
+            return bibloratoA - bibloratoB;
+          }
+          
+          // Si tienen el mismo BIBLORATO, ordenar por id
+          return (a.id_mantenimiento || 0) - (b.id_mantenimiento || 0);
+        });
         this.loading = false;
       },
       error: (error) => {
@@ -129,7 +140,8 @@ export class MantenimientosComponent implements OnInit {
       OBS: [''],
       DATOS_RELEVANTES: [''],
       PRORROGA: [false],
-      ES_PRORROGA: [false]
+      ES_PRORROGA: [false],
+      BIBLORATO: [null]
     });
   }
 
@@ -139,6 +151,7 @@ export class MantenimientosComponent implements OnInit {
       TIPO_NRO_PROC: mantenimiento.TIPO_NRO_PROC || '',
       EMPRESA: mantenimiento.EMPRESA || '',
       OBS: mantenimiento.OBS || '',
+      BIBLORATO: mantenimiento.BIBLORATO || null, // Precargar BIBLORATO
       // Limpiar otros campos para que se llenen nuevos
       MEMO: '',
       APIA: '',
@@ -164,6 +177,7 @@ export class MantenimientosComponent implements OnInit {
         ...formData,
         MONTO_INICIADO: formData.MONTO_INICIADO ?? undefined,
         MONTO_FINAL: formData.MONTO_FINAL ?? undefined,
+        BIBLORATO: formData.BIBLORATO ?? undefined,
         ES_PRORROGA: true // Marcar como prórroga
       };
 
@@ -216,5 +230,89 @@ export class MantenimientosComponent implements OnInit {
   isFieldInvalid(fieldName: string): boolean {
     const field = this.prorrogaForm.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
+  }
+
+  getMantenimientosAgrupados(): any[] {
+    const grupos: { [key: string]: Mantenimiento[] } = {};
+    
+    // Agrupar mantenimientos por BIBLORATO
+    this.mantenimientos.forEach(mantenimiento => {
+      const biblorato = mantenimiento.BIBLORATO || 'sin-biblorato';
+      if (!grupos[biblorato]) {
+        grupos[biblorato] = [];
+      }
+      grupos[biblorato].push(mantenimiento);
+    });
+
+    // Convertir a array y ordenar
+    return Object.keys(grupos).map(biblorato => ({
+      biblorato: biblorato === 'sin-biblorato' ? null : parseInt(biblorato),
+      mantenimientos: grupos[biblorato]
+    })).sort((a, b) => {
+      // Ordenar: primero los que tienen BIBLORATO, luego los que no
+      if (a.biblorato === null && b.biblorato !== null) return 1;
+      if (a.biblorato !== null && b.biblorato === null) return -1;
+      if (a.biblorato === null && b.biblorato === null) return 0;
+      return a.biblorato! - b.biblorato!;
+    });
+  }
+
+  getFechaFinClass(mantenimiento: Mantenimiento): string {
+    if (!mantenimiento.FIN) return '';
+    
+    const fechaFin = new Date(mantenimiento.FIN);
+    const hoy = new Date();
+    const mesesRestantes = this.calcularMesesRestantes(hoy, fechaFin);
+    
+    const tipoProcedimiento = mantenimiento.TIPO_NRO_PROC;
+    
+    // Criterios de alerta
+    const esLAAoLAoCDE = tipoProcedimiento === 'LAA' || tipoProcedimiento === 'LA' || tipoProcedimiento === 'CDE';
+    const esCDoCDNCoCDA = tipoProcedimiento === 'CD' || tipoProcedimiento === 'CDNC' || tipoProcedimiento === 'CDA';
+    
+    // Aplicar criterios de color
+    if (esLAAoLAoCDE && mesesRestantes <= 8) {
+      return 'fecha-alerta-roja';
+    } else if (esCDoCDNCoCDA && mesesRestantes <= 6) {
+      return 'fecha-alerta-roja';
+    }
+    
+    return '';
+  }
+
+  getFechaFinText(mantenimiento: Mantenimiento): string {
+    if (!mantenimiento.FIN) return '-';
+    
+    const fechaFormateada = this.formatDate(mantenimiento.FIN);
+    const fechaFin = new Date(mantenimiento.FIN);
+    const hoy = new Date();
+    const mesesRestantes = this.calcularMesesRestantes(hoy, fechaFin);
+    
+    const tipoProcedimiento = mantenimiento.TIPO_NRO_PROC;
+    const esLAAoLAoCDE = tipoProcedimiento === 'LAA' || tipoProcedimiento === 'LA' || tipoProcedimiento === 'CDE';
+    const esCDoCDNCoCDA = tipoProcedimiento === 'CD' || tipoProcedimiento === 'CDNC' || tipoProcedimiento === 'CDA';
+    
+    // Si está en alerta, mostrar la fecha con información de meses restantes
+    if ((esLAAoLAoCDE && mesesRestantes <= 8) || (esCDoCDNCoCDA && mesesRestantes <= 6)) {
+      return `${fechaFormateada} (${mesesRestantes}m)`;
+    }
+    
+    return fechaFormateada;
+  }
+
+  private calcularMesesRestantes(fechaInicio: Date, fechaFin: Date): number {
+    // Calcular la diferencia en meses de manera más precisa
+    const yearDiff = fechaFin.getFullYear() - fechaInicio.getFullYear();
+    const monthDiff = fechaFin.getMonth() - fechaInicio.getMonth();
+    const dayDiff = fechaFin.getDate() - fechaInicio.getDate();
+    
+    let totalMonths = yearDiff * 12 + monthDiff;
+    
+    // Si el día de fin es menor al día de inicio, restar un mes
+    if (dayDiff < 0) {
+      totalMonths--;
+    }
+    
+    return totalMonths;
   }
 }

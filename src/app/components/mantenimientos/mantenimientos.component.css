@@ -160,6 +160,53 @@
   font-weight: bold;
 }
 
+/* Estilos para agrupación por BIBLORATO */
+.table-group-header {
+  background-color: #e9ecef !important;
+  border-top: 2px solid #6c757d;
+  border-bottom: 1px solid #adb5bd;
+}
+
+.table-group-header td {
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  border: none;
+}
+
+.table-group-item {
+  background-color: #f8f9fa;
+}
+
+.table-group-item:hover {
+  background-color: #e9ecef !important;
+}
+
+.table-group-item td {
+  border-left: 3px solid #6c757d;
+  padding-left: 13px;
+}
+
+/* Estilos para semáforo de fechas */
+.fecha-alerta-roja {
+  background-color: #dc3545 !important;
+  color: white !important;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 6px;
+  padding: 6px 12px;
+  display: inline-block;
+  min-width: 100px;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+  border: 2px solid #c82333;
+  position: relative;
+}
+
+.fecha-alerta-roja::before {
+  content: "⚠️";
+  margin-right: 4px;
+  font-size: 12px;
+}
+
 .material-symbols-outlined {
   font-size: 18px;
   vertical-align: middle;

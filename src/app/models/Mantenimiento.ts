@@ -16,6 +16,7 @@ export interface Mantenimiento {
   DATOS_RELEVANTES?: string;
   PRORROGA?: boolean;
   ES_PRORROGA?: boolean; // Indica si este mantenimiento fue creado como prórroga
+  BIBLORATO?: number; // Nuevo campo para agrupación
 }
 
 export interface MantenimientoFormData {
@@ -34,4 +35,5 @@ export interface MantenimientoFormData {
   OBS: string;
   DATOS_RELEVANTES: string;
   PRORROGA: boolean;
+  BIBLORATO: number | null;
 }

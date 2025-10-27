@@ -55,7 +55,8 @@ export class MantenimientoFormComponent implements OnInit {
       PERIODICIDAD: [''],
       OBS: [''],
       DATOS_RELEVANTES: [''],
-      PRORROGA: [false]
+      PRORROGA: [false],
+      BIBLORATO: [null]
     });
   }
 
@@ -92,7 +93,8 @@ export class MantenimientoFormComponent implements OnInit {
       PERIODICIDAD: mantenimiento.PERIODICIDAD || '',
       OBS: mantenimiento.OBS || '',
       DATOS_RELEVANTES: mantenimiento.DATOS_RELEVANTES || '',
-      PRORROGA: mantenimiento.PRORROGA || false
+      PRORROGA: mantenimiento.PRORROGA || false,
+      BIBLORATO: mantenimiento.BIBLORATO || null
     });
   }
 
@@ -122,7 +124,8 @@ export class MantenimientoFormComponent implements OnInit {
     const mantenimiento: Mantenimiento = {
       ...formData,
       MONTO_INICIADO: formData.MONTO_INICIADO ?? undefined,
-      MONTO_FINAL: formData.MONTO_FINAL ?? undefined
+      MONTO_FINAL: formData.MONTO_FINAL ?? undefined,
+      BIBLORATO: formData.BIBLORATO ?? undefined
     };
     this.mantenimientosService.createMantenimiento(mantenimiento).subscribe({
       next: () => {
@@ -142,7 +145,8 @@ export class MantenimientoFormComponent implements OnInit {
     const mantenimiento: Mantenimiento = {
       ...formData,
       MONTO_INICIADO: formData.MONTO_INICIADO ?? undefined,
-      MONTO_FINAL: formData.MONTO_FINAL ?? undefined
+      MONTO_FINAL: formData.MONTO_FINAL ?? undefined,
+      BIBLORATO: formData.BIBLORATO ?? undefined
     };
     this.mantenimientosService.updateMantenimiento(this.mantenimientoId, mantenimiento).subscribe({
       next: () => {
