@@ -11,7 +11,7 @@ import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-detalles-compra',
   standalone: true,
-  imports: [CommonModule, RouterModule, NavBarComponent, FormsModule, ReactiveFormsModule, SafeUrlPipe],
+  imports: [CommonModule, RouterModule, NavBarComponent, FormsModule, ReactiveFormsModule],
   providers: [ComprasService, FormBuilder],
   templateUrl: './detalles-compra.component.html',
   styleUrls: ['./detalles-compra.component.css']

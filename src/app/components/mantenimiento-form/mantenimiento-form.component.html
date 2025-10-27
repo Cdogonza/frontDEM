@@ -1,0 +1,236 @@
+<app-nav-bar></app-nav-bar>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<div class="container-fluid">
+  <div class="header-section">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h2>{{ isEditMode ? 'Editar Mantenimiento' : 'Nuevo Mantenimiento' }}</h2>
+        <p class="text-muted">{{ isEditMode ? 'Modifica los datos del mantenimiento' : 'Completa los datos del nuevo mantenimiento' }}</p>
+      </div>
+      <button class="btn btn-secondary" (click)="cancel()">
+        <span class="material-symbols-outlined">arrow_back</span>
+        Volver
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <!-- Loading State -->
+      <div *ngIf="loading && isEditMode" class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-2">Cargando datos del mantenimiento...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="error" class="alert alert-danger" role="alert">
+        <span class="material-symbols-outlined">error</span>
+        {{ error }}
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="mantenimientoForm" (ngSubmit)="onSubmit()" *ngIf="!loading || !isEditMode">
+        <div class="row">
+          <!-- Información Básica -->
+          <div class="col-12">
+            <h5 class="section-title">Información Básica</h5>
+          </div>
+          
+          <div class="col-md-6 mb-3">
+            <label for="MEMO" class="form-label">MEMO</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="MEMO" 
+              formControlName="MEMO"
+              [class.is-invalid]="isFieldInvalid('MEMO')">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="TIPO_NRO_PROC" class="form-label">Tipo/Nro Proc.</label>
+            <select 
+              class="form-control" 
+              id="TIPO_NRO_PROC" 
+              formControlName="TIPO_NRO_PROC"
+              [class.is-invalid]="isFieldInvalid('TIPO_NRO_PROC')">
+              <option value="">Seleccione un tipo</option>
+              <option value="LAA">LAA</option>
+              <option value="LA">LA</option>
+              <option value="CDA">CDA</option>
+              <option value="CD">CD</option>
+              <option value="CDNC">CDNC</option>
+              <option value="CDE">CDE</option>
+              <option value="UCA">UCA</option>
+              <option value="UCAMAE">UCAMAE</option>
+            </select>
+          </div>
+
+          <div class="col-12 mb-3">
+            <label for="OBJETO" class="form-label">Objeto</label>
+            <textarea 
+              class="form-control" 
+              id="OBJETO" 
+              formControlName="OBJETO" 
+              rows="3"
+              [class.is-invalid]="isFieldInvalid('OBJETO')"></textarea>
+          </div>
+
+          <!-- Información de Contrato -->
+          <div class="col-12">
+            <h5 class="section-title">Información de Contrato</h5>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="APIA" class="form-label">APIA</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="APIA" 
+              formControlName="APIA"
+              [class.is-invalid]="isFieldInvalid('APIA')">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="RESOLUCION" class="form-label">Resolución</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="RESOLUCION" 
+              formControlName="RESOLUCION"
+              [class.is-invalid]="isFieldInvalid('RESOLUCION')">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="EMPRESA" class="form-label">Empresa</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="EMPRESA" 
+              formControlName="EMPRESA"
+              [class.is-invalid]="isFieldInvalid('EMPRESA')">
+          </div>
+
+          <!-- Información Financiera -->
+          <div class="col-12">
+            <h5 class="section-title">Información Financiera</h5>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="MONTO_INICIADO" class="form-label">Monto Iniciado (€)</label>
+            <input 
+              type="number" 
+              class="form-control" 
+              id="MONTO_INICIADO" 
+              formControlName="MONTO_INICIADO"
+              step="0.01"
+              min="0"
+              [class.is-invalid]="isFieldInvalid('MONTO_INICIADO')">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="MONTO_FINAL" class="form-label">Monto Final (€)</label>
+            <input 
+              type="number" 
+              class="form-control" 
+              id="MONTO_FINAL" 
+              formControlName="MONTO_FINAL"
+              step="0.01"
+              min="0"
+              [class.is-invalid]="isFieldInvalid('MONTO_FINAL')">
+          </div>
+
+          <!-- Fechas y Duración -->
+          <div class="col-12">
+            <h5 class="section-title">Fechas y Duración</h5>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="INICIO" class="form-label">Fecha de Inicio</label>
+            <input 
+              type="date" 
+              class="form-control" 
+              id="INICIO" 
+              formControlName="INICIO"
+              [class.is-invalid]="isFieldInvalid('INICIO')">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="FIN" class="form-label">Fecha de Fin</label>
+            <input 
+              type="date" 
+              class="form-control" 
+              id="FIN" 
+              formControlName="FIN"
+              [class.is-invalid]="isFieldInvalid('FIN')">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="DURACION" class="form-label">Duración</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="DURACION" 
+              formControlName="DURACION"
+              placeholder="Ej: 12 meses, 1 año"
+              [class.is-invalid]="isFieldInvalid('DURACION')">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="PERIODICIDAD" class="form-label">Periodicidad</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="PERIODICIDAD" 
+              formControlName="PERIODICIDAD"
+              placeholder="Ej: Mensual, Trimestral, Anual"
+              [class.is-invalid]="isFieldInvalid('PERIODICIDAD')">
+          </div>
+
+          <!-- Observaciones -->
+          <div class="col-12">
+            <h5 class="section-title">Observaciones y Datos Adicionales</h5>
+          </div>
+
+          <div class="col-12 mb-3">
+            <label for="OBS" class="form-label">Observaciones</label>
+            <textarea 
+              class="form-control" 
+              id="OBS" 
+              formControlName="OBS" 
+              rows="4"
+              [class.is-invalid]="isFieldInvalid('OBS')"></textarea>
+          </div>
+
+          <div class="col-12 mb-3">
+            <label for="DATOS_RELEVANTES" class="form-label">Datos Relevantes</label>
+            <textarea 
+              class="form-control" 
+              id="DATOS_RELEVANTES" 
+              formControlName="DATOS_RELEVANTES" 
+              rows="4"
+              [class.is-invalid]="isFieldInvalid('DATOS_RELEVANTES')"></textarea>
+          </div>
+
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary me-2" (click)="cancel()">
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+            <span class="material-symbols-outlined me-1">{{ isEditMode ? 'save' : 'add' }}</span>
+            {{ isEditMode ? 'Actualizar' : 'Crear' }} Mantenimiento
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

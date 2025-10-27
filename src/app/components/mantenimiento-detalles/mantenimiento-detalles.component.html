@@ -1,0 +1,124 @@
+<app-nav-bar></app-nav-bar>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<div class="container-fluid">
+  <div class="header-section">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h2>Detalles del Mantenimiento</h2>
+        <p class="text-muted">Información completa del procedimiento de mantenimiento</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-warning me-2" (click)="editarMantenimiento()">
+          <span class="material-symbols-outlined">edit</span>
+          Editar
+        </button>
+        <button class="btn btn-secondary" (click)="volver()">
+          <span class="material-symbols-outlined">arrow_back</span>
+          Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-3">Cargando detalles del mantenimiento...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    <span class="material-symbols-outlined">error</span>
+    {{ error }}
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadMantenimiento()">
+      Reintentar
+    </button>
+  </div>
+
+  <!-- Details Content -->
+  <div *ngIf="mantenimiento && !loading && !error" class="details-content">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <span class="material-symbols-outlined me-2">info</span>
+          Detalles del Mantenimiento
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="detail-label">MEMO</label>
+            <p class="detail-value">{{ mantenimiento.MEMO || 'No especificado' }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="detail-label">Tipo/Nro Proc.</label>
+            <p class="detail-value">{{ mantenimiento.TIPO_NRO_PROC || 'No especificado' }}</p>
+          </div>
+          <div class="col-12 mb-3">
+            <label class="detail-label">Objeto</label>
+            <p class="detail-value">{{ mantenimiento.OBJETO || 'No especificado' }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="detail-label">APIA</label>
+            <p class="detail-value">{{ mantenimiento.APIA || 'No especificado' }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="detail-label">Resolución</label>
+            <p class="detail-value">{{ mantenimiento.RESOLUCION || 'No especificado' }}</p>
+          </div>
+          <div class="col-12 mb-3">
+            <label class="detail-label">Empresa</label>
+            <p class="detail-value">{{ mantenimiento.EMPRESA || 'No especificado' }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="detail-label">Monto Iniciado</label>
+            <p class="detail-value amount">{{ formatCurrency(mantenimiento.MONTO_INICIADO) }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="detail-label">Monto Final</label>
+            <p class="detail-value amount">{{ formatCurrency(mantenimiento.MONTO_FINAL) }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="detail-label">Fecha de Inicio</label>
+            <p class="detail-value">{{ formatDate(mantenimiento.INICIO) }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="detail-label">Fecha de Fin</label>
+            <p class="detail-value">{{ formatDate(mantenimiento.FIN) }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="detail-label">Duración</label>
+            <p class="detail-value">{{ mantenimiento.DURACION || 'No especificado' }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="detail-label">Periodicidad</label>
+            <p class="detail-value">{{ mantenimiento.PERIODICIDAD || 'No especificado' }}</p>
+          </div>
+          <div class="col-12 mb-3">
+            <label class="detail-label">Observaciones</label>
+            <p class="detail-value" [class.no-data]="!hasValue(mantenimiento.OBS)">
+              {{ mantenimiento.OBS || 'No hay observaciones registradas' }}
+            </p>
+          </div>
+          <div class="col-12 mb-3">
+            <label class="detail-label">Datos Relevantes</label>
+            <p class="detail-value" [class.no-data]="!hasValue(mantenimiento.DATOS_RELEVANTES)">
+              {{ mantenimiento.DATOS_RELEVANTES || 'No hay datos relevantes registrados' }}
+            </p>
+          </div>
+          <div class="col-12 mb-3">
+            <label class="detail-label">Prórroga</label>
+            <p class="detail-value">
+              <span class="badge" [class.bg-success]="mantenimiento.PRORROGA" [class.bg-secondary]="!mantenimiento.PRORROGA">
+                {{ formatBoolean(mantenimiento.PRORROGA) }}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

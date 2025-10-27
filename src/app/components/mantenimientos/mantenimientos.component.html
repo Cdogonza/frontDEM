@@ -1,0 +1,328 @@
+<app-nav-bar></app-nav-bar>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<div class="container-fluid">
+  <div class="header-section">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h2>Gestión de Mantenimientos y Arrendamientos</h2>
+        <p class="text-muted">Administra los procedimientos de compra de mantenimientos</p>
+      </div>
+      <button class="btn btn-primary" (click)="crearNuevo()">
+        <span class="material-symbols-outlined">add</span>
+        Nuevo Mantenimiento
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <!-- Loading State -->
+      <div *ngIf="loading" class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-2">Cargando mantenimientos...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="error && !loading" class="alert alert-danger" role="alert">
+        <span class="material-symbols-outlined">error</span>
+        {{ error }}
+        <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadMantenimientos()">
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div *ngIf="!loading && !error" class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>MEMO</th>
+              <th>Tipo/Nro Proc.</th>
+              <th>Objeto</th>
+              <th>Empresa</th>
+              <th>Monto Iniciado</th>
+              <th>Monto Final</th>
+              <th>Inicio</th>
+              <th>Fin</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mantenimiento of mantenimientos">
+              <td>{{ mantenimiento.MEMO || '-' }}</td>
+              <td>{{ mantenimiento.TIPO_NRO_PROC || '-' }}</td>
+              <td>{{ mantenimiento.OBJETO || '-' }}</td>
+              <td>{{ mantenimiento.EMPRESA || '-' }}</td>
+              <td>{{ formatCurrency(mantenimiento.MONTO_INICIADO) }}</td>
+              <td>{{ formatCurrency(mantenimiento.MONTO_FINAL) }}</td>
+              <td>{{ formatDate(mantenimiento.INICIO) }}</td>
+              <td>{{ formatDate(mantenimiento.FIN) }}</td>
+              <td>
+                <div class="btn-group" role="group">
+                  <button 
+                    class="btn btn-sm btn-outline-info" 
+                    (click)="verDetalles(mantenimiento.id_mantenimiento!)"
+                    title="Ver detalles">
+                    <span class="material-symbols-outlined">visibility</span>
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-outline-warning" 
+                    (click)="editarMantenimiento(mantenimiento.id_mantenimiento!)"
+                    title="Editar">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button 
+                    class="btn btn-sm"
+                    [class.btn-outline-primary]="!mantenimiento.PRORROGA && !mantenimiento.ES_PRORROGA"
+                    [class.btn-outline-success]="mantenimiento.ES_PRORROGA"
+                    [class.btn-outline-secondary]="mantenimiento.PRORROGA && !mantenimiento.ES_PRORROGA"
+                    [disabled]="mantenimiento.PRORROGA && !mantenimiento.ES_PRORROGA"
+                    (click)="accionAdicional(mantenimiento.id_mantenimiento!)"
+                    [title]="getProrrogaTooltip(mantenimiento)">
+                    <span *ngIf="!mantenimiento.PRORROGA && !mantenimiento.ES_PRORROGA">PR</span>
+                    <span *ngIf="mantenimiento.PRORROGA && !mantenimiento.ES_PRORROGA" class="prohibido-text">
+                      <span class="material-symbols-outlined">block</span>
+                    </span>
+                    <span *ngIf="mantenimiento.ES_PRORROGA" class="prorroga-text">
+                      <span class="material-symbols-outlined">check_circle</span>
+                    </span>
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-outline-danger" 
+                    (click)="eliminarMantenimiento(mantenimiento.id_mantenimiento!)"
+                    title="Eliminar">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div *ngIf="mantenimientos.length === 0" class="text-center py-5">
+          <span class="material-symbols-outlined" style="font-size: 4rem; color: #6c757d;">inbox</span>
+          <h4 class="mt-3 text-muted">No hay mantenimientos registrados</h4>
+          <p class="text-muted">Comienza creando tu primer mantenimiento</p>
+          <button class="btn btn-primary" (click)="crearNuevo()">
+            <span class="material-symbols-outlined">add</span>
+            Crear Primer Mantenimiento
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Prórroga -->
+<div *ngIf="showProrrogaModal" class="modal-overlay" (click)="cerrarModalProrroga()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h4>Crear Prórroga</h4>
+      <button type="button" class="close-btn" (click)="cerrarModalProrroga()">
+        <span>&times;</span>
+      </button>
+    </div>
+    
+    <form [formGroup]="prorrogaForm" (ngSubmit)="guardarProrroga()" class="modal-body">
+      <div class="row">
+        <!-- Información Básica -->
+        <div class="col-12">
+          <h6 class="section-title">Información Básica</h6>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <label for="MEMO" class="form-label">MEMO</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="MEMO" 
+            formControlName="MEMO"
+            [class.is-invalid]="isFieldInvalid('MEMO')">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="TIPO_NRO_PROC" class="form-label">Tipo/Nro Proc.</label>
+          <select 
+            class="form-control" 
+            id="TIPO_NRO_PROC" 
+            formControlName="TIPO_NRO_PROC"
+            [class.is-invalid]="isFieldInvalid('TIPO_NRO_PROC')">
+            <option value="">Seleccione un tipo</option>
+            <option value="LAA">LAA</option>
+            <option value="LA">LA</option>
+            <option value="CDA">CDA</option>
+            <option value="CD">CD</option>
+            <option value="CDNC">CDNC</option>
+            <option value="CDE">CDE</option>
+            <option value="UCA">UCA</option>
+            <option value="UCAMAE">UCAMAE</option>
+          </select>
+        </div>
+
+        <div class="col-12 mb-3">
+          <label for="OBJETO" class="form-label">Objeto</label>
+          <textarea 
+            class="form-control" 
+            id="OBJETO" 
+            formControlName="OBJETO" 
+            rows="3"
+            [class.is-invalid]="isFieldInvalid('OBJETO')"></textarea>
+        </div>
+
+        <!-- Información de Contrato -->
+        <div class="col-12">
+          <h6 class="section-title">Información de Contrato</h6>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="APIA" class="form-label">APIA</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="APIA" 
+            formControlName="APIA"
+            [class.is-invalid]="isFieldInvalid('APIA')">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="RESOLUCION" class="form-label">Resolución</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="RESOLUCION" 
+            formControlName="RESOLUCION"
+            [class.is-invalid]="isFieldInvalid('RESOLUCION')">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="EMPRESA" class="form-label">Empresa</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="EMPRESA" 
+            formControlName="EMPRESA"
+            [class.is-invalid]="isFieldInvalid('EMPRESA')">
+        </div>
+
+        <!-- Información Financiera -->
+        <div class="col-12">
+          <h6 class="section-title">Información Financiera</h6>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="MONTO_INICIADO" class="form-label">Monto Iniciado (€)</label>
+          <input 
+            type="number" 
+            class="form-control" 
+            id="MONTO_INICIADO" 
+            formControlName="MONTO_INICIADO"
+            step="0.01"
+            min="0"
+            [class.is-invalid]="isFieldInvalid('MONTO_INICIADO')">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="MONTO_FINAL" class="form-label">Monto Final (€)</label>
+          <input 
+            type="number" 
+            class="form-control" 
+            id="MONTO_FINAL" 
+            formControlName="MONTO_FINAL"
+            step="0.01"
+            min="0"
+            [class.is-invalid]="isFieldInvalid('MONTO_FINAL')">
+        </div>
+
+        <!-- Fechas y Duración -->
+        <div class="col-12">
+          <h6 class="section-title">Fechas y Duración</h6>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="INICIO" class="form-label">Fecha de Inicio</label>
+          <input 
+            type="date" 
+            class="form-control" 
+            id="INICIO" 
+            formControlName="INICIO"
+            [class.is-invalid]="isFieldInvalid('INICIO')">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="FIN" class="form-label">Fecha de Fin</label>
+          <input 
+            type="date" 
+            class="form-control" 
+            id="FIN" 
+            formControlName="FIN"
+            [class.is-invalid]="isFieldInvalid('FIN')">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="DURACION" class="form-label">Duración</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="DURACION" 
+            formControlName="DURACION"
+            placeholder="Ej: 12 meses, 1 año"
+            [class.is-invalid]="isFieldInvalid('DURACION')">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="PERIODICIDAD" class="form-label">Periodicidad</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="PERIODICIDAD" 
+            formControlName="PERIODICIDAD"
+            placeholder="Ej: Mensual, Trimestral, Anual"
+            [class.is-invalid]="isFieldInvalid('PERIODICIDAD')">
+        </div>
+
+        <!-- Observaciones -->
+        <div class="col-12">
+          <h6 class="section-title">Observaciones y Datos Adicionales</h6>
+        </div>
+
+        <div class="col-12 mb-3">
+          <label for="OBS" class="form-label">Observaciones</label>
+          <textarea 
+            class="form-control" 
+            id="OBS" 
+            formControlName="OBS" 
+            rows="4"
+            [class.is-invalid]="isFieldInvalid('OBS')"></textarea>
+        </div>
+
+        <div class="col-12 mb-3">
+          <label for="DATOS_RELEVANTES" class="form-label">Datos Relevantes</label>
+          <textarea 
+            class="form-control" 
+            id="DATOS_RELEVANTES" 
+            formControlName="DATOS_RELEVANTES" 
+            rows="4"
+            [class.is-invalid]="isFieldInvalid('DATOS_RELEVANTES')"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModalProrroga()">
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="loadingProrroga">
+          <span *ngIf="loadingProrroga" class="spinner-border spinner-border-sm me-2" role="status"></span>
+          <span class="material-symbols-outlined me-1">add</span>
+          Crear Prórroga
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -14,6 +14,8 @@ import { ComprasComponent } from './components/compras/compras.component';
 import { DetallesCompraComponent } from './components/detalles-compra/detalles-compra.component';
 import { InformesTecnicosComponent } from './components/informes-tecnicos/informes-tecnicos.component';
 import { adminguardGuard } from './adminguard.guard';
+import { MantenimientosComponent } from './components/mantenimientos/mantenimientos.component';
+import { MantenimientoFormComponent } from './components/mantenimiento-form/mantenimiento-form.component';
 export const routes: Routes = [
     {path: 'novedades', component: NovedadesComponent, canActivate: [AuthGuard]},
     {path: 'novedadForm', component: NovedadFormComponent},
@@ -27,6 +29,19 @@ export const routes: Routes = [
     {path: 'facturacion', component: FacturacionComponent, canActivate: [AuthGuard]},
     {path: 'compras', component: ComprasComponent, canActivate: [AuthGuard]},
     {path: 'informes-tecnicos', component: InformesTecnicosComponent, canActivate: [AuthGuard]},
+    {path: 'mantenimientos', component: MantenimientosComponent, canActivate: [AuthGuard]},
+    {path: 'mantenimientos/nuevo', component: MantenimientoFormComponent, canActivate: [AuthGuard]},
+    {
+      path: 'mantenimientos/editar/:id',
+      loadComponent: () => import('./components/mantenimiento-form/mantenimiento-form.component').then(m => m.MantenimientoFormComponent),
+      canActivate: [AuthGuard]
+    },
+    {
+      path: 'mantenimientos/detalles/:id',
+      loadComponent: () => import('./components/mantenimiento-detalles/mantenimiento-detalles.component').then(m => m.MantenimientoDetallesComponent),
+      canActivate: [AuthGuard]
+    },
+
     {
       path: 'detalles-compra/:id',
       loadComponent: () =>
